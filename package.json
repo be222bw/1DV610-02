@@ -1,0 +1,19 @@
+{
+  "name": "1dv610-02",
+  "version": "1.0.0",
+  "description": "A web component representing a window.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/be222bw/1DV610-02.git"
+  },
+  "author": "Björn Elmqvist",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/be222bw/1DV610-02/issues"
+  },
+  "homepage": "https://github.com/be222bw/1DV610-02#readme"
+}
