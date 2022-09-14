@@ -2,9 +2,19 @@
   "name": "1dv610-02",
   "version": "1.0.0",
   "description": "A web component representing a window.",
-  "main": "index.js",
+  "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "snowpack dev",
+    "build": "snowpack build"
+  },
+  "snowpack": {
+    "mount": {
+      "public": "/",
+      "src": "/js"
+    },
+    "devOptions": {
+      "bundle": false
+    }
   },
   "repository": {
     "type": "git",
@@ -15,5 +25,8 @@
   "bugs": {
     "url": "https://github.com/be222bw/1DV610-02/issues"
   },
-  "homepage": "https://github.com/be222bw/1DV610-02#readme"
+  "homepage": "https://github.com/be222bw/1DV610-02#readme",
+  "devDependencies": {
+    "snowpack": "^3.8.8"
+  }
 }
