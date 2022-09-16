@@ -1,5 +1,5 @@
 export default
-`<link rel="stylesheet" type="text/css" href="./Window-Style.css">
+`<link rel="stylesheet" type="text/css" href="js/components/WindowElement/window-template.css">
 <border-element>
   <title-bar>
     <div id="buttoncontainer">

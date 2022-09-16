@@ -9,8 +9,7 @@
   },
   "snowpack": {
     "mount": {
-      "public": "/",
-      "src": "/js"
+      "public": "/"
     },
     "devOptions": {
       "bundle": false
