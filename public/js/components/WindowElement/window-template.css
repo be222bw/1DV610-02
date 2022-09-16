@@ -9,6 +9,13 @@
   background-color: grey;
 }
 
+:host[maximised] {
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
 :host(.active) #title {
   background: #00F;
 }
@@ -119,6 +126,16 @@ border-element {
 }
 
 close-button {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  background-color: lightgrey;
+  color: black;
+}
+
+maximise-button {
   display: inline-block;
   width: 20px;
   height: 20px;
