@@ -4,7 +4,8 @@ window.customElements.define('window-element',
   class extends window.HTMLElement {
     constructor () {
       super()
-      this.innerHTML = windowTemplate
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.innerHTML = windowTemplate
       this.addEventListener('closeWindow', (e) => {
         this.remove()
       })

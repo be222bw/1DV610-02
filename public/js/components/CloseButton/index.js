@@ -7,7 +7,7 @@ window.customElements.define('close-button',
 
     #onClick ()  {
       const closeWindow = new CustomEvent('closeWindow',
-        { bubbles: true })
+        { bubbles: true, composed: true })
       this.removeEventListener('click', this.#onClick)
       this.dispatchEvent(closeWindow)
     }
