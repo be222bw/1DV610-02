@@ -1,3 +1,15 @@
+:host[max] {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+:host[min] {
+  display: none;
+}
+
 :host {
   font-size: 1.2em;
   color: #000;
@@ -7,18 +19,6 @@
   position: absolute;
   float: left;
   background-color: grey;
-}
-
-:host[maximised] {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-}
-
-:host(.active) #title {
-  background: #00F;
 }
 
 title-bar {
@@ -137,6 +137,16 @@ close-button {
 }
 
 maximise-button {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+  background-color: lightgrey;
+  color: black;
+}
+
+minimise-button {
   display: inline-block;
   width: 20px;
   height: 20px;
