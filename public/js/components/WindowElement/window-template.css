@@ -1,4 +1,4 @@
-:host[max] {
+:host([max]) {
   position: absolute;
   left: 0;
   top: 0;
@@ -6,7 +6,7 @@
   height: 100%;
 }
 
-:host[min] {
+:host([min]) {
   display: none;
 }
 
