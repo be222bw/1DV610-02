@@ -8,18 +8,17 @@ window.customElements.define('window-element',
       super()
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.innerHTML = windowTemplate
+
       this.addEventListener('closeWindow', (e) => {
-        this.remove()
+        this.close()
       })
+
       this.addEventListener('maximiseWindow', (e) => {
-        if (this.hasAttribute('max')) {
-          this.removeAttribute('max')
-        } else {
-          this.setAttribute('max', '')
-        }
+        this.maximise()
       })
+
       this.addEventListener('minimiseWindow', (e) => {
-          this.setAttribute('min', '')
+          this.minimise()
       })
     }
 
@@ -30,6 +29,22 @@ window.customElements.define('window-element',
       } else if (name === 'min' && newValue === '') {
         this.removeAttribute('max')
       }
+    }
+
+    maximise() {
+      if (this.hasAttribute('max')) {
+        this.removeAttribute('max')
+      } else {
+        this.setAttribute('max', '')
+      }
+    }
+    
+    minimise() {
+      this.setAttribute('min', '')
+    }
+
+    close() {
+      this.remove()
     }
 
     static get observedAttributes() {
