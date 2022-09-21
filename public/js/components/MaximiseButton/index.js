@@ -4,10 +4,19 @@ window.customElements.define('maximise-button',
 
     constructor () {
       super()
-      this.addEventListener('click', this.#onClick)
     }
 
-    #onClick ()  {
+    connectedCallback() {
+      if (this.isConnected) {
+        this.addEventListener('click', this.#onClick)
+      }
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('click', this.#onClick)
+    }
+
+    #onClick = e =>  {
       const maximiseWindow = new CustomEvent('maximiseWindow',
         { bubbles: true, composed: true })
       this.dispatchEvent(maximiseWindow)

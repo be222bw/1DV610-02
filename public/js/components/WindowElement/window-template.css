@@ -43,9 +43,10 @@ title-bar p {
   -o-user-select: none;
 }
 
-border-element {
+border-element div {
   background-color: lightgrey;
 }
+
 
 #topleftside {
   position: absolute;

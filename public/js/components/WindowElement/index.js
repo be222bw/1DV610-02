@@ -2,26 +2,32 @@ import windowTemplate from './window-template'
 import  '../CloseButton'
 import '../MaximiseButton'
 import '../MinimiseButton'
+import '../BorderElement'
 window.customElements.define('window-element',
   class extends window.HTMLElement {
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.innerHTML = windowTemplate
-
-      this.addEventListener('closeWindow', (e) => {
-        this.close()
-      })
-
-      this.addEventListener('maximiseWindow', (e) => {
-        this.maximise()
-      })
-
-      this.addEventListener('minimiseWindow', (e) => {
-          this.minimise()
-      })
     }
 
+    connectedCallback() {
+      if (this.isConnected) {
+        this.addEventListener('closeWindow', this.#onClose)
+        this.addEventListener('maximiseWindow', this.#onMaximise)
+        this.addEventListener('minimiseWindow', this.#onMinimise)
+      }
+    }
+
+    disconnectedCallback() {
+      this.removeEventListener('closeWindow', this.#onClose)
+      this.removeEventListener('maximiseWindow', this.#onMaximise)
+      this.removeEventListener('minimiseWindow', this.#onMinimise)
+    }
+
+    #onClose = e => this.close(e)
+    #onMaximise = e => this.maximise(e)
+    #onMinimise = e => this.minimise(e)
     
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'max' && newValue === '') {
@@ -31,7 +37,7 @@ window.customElements.define('window-element',
       }
     }
 
-    maximise() {
+    maximise(e) {
       if (this.hasAttribute('max')) {
         this.removeAttribute('max')
       } else {
@@ -39,11 +45,11 @@ window.customElements.define('window-element',
       }
     }
     
-    minimise() {
+    minimise(e) {
       this.setAttribute('min', '')
     }
 
-    close() {
+    close(e) {
       this.remove()
     }
 
