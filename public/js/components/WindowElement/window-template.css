@@ -13,10 +13,11 @@
 :host {
   font-size: 1.2em;
   color: #000;
+  left: 500px;
   width: 500px;
   height: 200px;
   overflow: hidden;
-  position: absolute;
+  position: relative;
   float: left;
   background-color: grey;
 }

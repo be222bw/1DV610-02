@@ -16,6 +16,7 @@ window.customElements.define('window-element',
         this.addEventListener('closeWindow', this.#onClose)
         this.addEventListener('maximiseWindow', this.#onMaximise)
         this.addEventListener('minimiseWindow', this.#onMinimise)
+        this.addEventListener('resizeWindow', this.#onResize)
       }
     }
 
@@ -23,11 +24,13 @@ window.customElements.define('window-element',
       this.removeEventListener('closeWindow', this.#onClose)
       this.removeEventListener('maximiseWindow', this.#onMaximise)
       this.removeEventListener('minimiseWindow', this.#onMinimise)
+      this.removeEventListener('resizeWindow', this.#onResize)
     }
 
     #onClose = e => this.close(e)
     #onMaximise = e => this.maximise(e)
     #onMinimise = e => this.minimise(e)
+    #onResize = e => this.resize(e.detail.sides, e.detail.coordinates)
     
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'max' && newValue === '') {
@@ -51,6 +54,14 @@ window.customElements.define('window-element',
 
     close(e) {
       this.remove()
+    }
+
+    resize(sides, coordinates) {
+      for (let i = 0; i < sides.length; i++) {
+        const side = sides[i]
+        const coordinate = coordinates[i]
+        this.style[side] = `${coordinate}px`
+      }
     }
 
     static get observedAttributes() {

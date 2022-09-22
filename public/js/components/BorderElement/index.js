@@ -1,5 +1,7 @@
 window.customElements.define('border-element',
   class extends window.HTMLElement {
+    #currentBorder
+
     constructor () {
       super()
     }
@@ -13,26 +15,32 @@ window.customElements.define('border-element',
     disconnectedCallback() {
       this.removeEventListener('mousedown', this.#onMouseDown)
     }
+    
+    #onMouseDown = e =>  {
+      this.#currentBorder = e.target
+      window.addEventListener('mousemove', this.#onMouseMove)
+      window.addEventListener('mouseup', this.#onMouseUp)
+    }
 
     #onMouseUp = e => {
-      this.removeEventListener('mousemove', this.#onMouseMove)
-      this.removeEventListener('mouseup', this.#onMouseUp)
+      window.removeEventListener('mousemove', this.#onMouseMove)
+      window.removeEventListener('mouseup', this.#onMouseUp)
     }
 
     #onMouseMove = e => {
-      this.addEventListener('mouseup', this.#onMouseUp)
-    }
-
-    #onMouseDown = e =>  {
-      this.addEventListener('mousemove', this.#onMouseMove)
-      let side
-      switch (e.target) {
-        case 'bottomside':
-        side = 'bottom'
-      }
+      const sides = JSON.parse(this.#currentBorder
+        .getAttribute('data-sides'))
+      const directions = JSON.parse(this.#currentBorder
+        .getAttribute('data-directions'))
       
+      const coordinates = []
+      for (const direction of directions) {
+        coordinates.push(e[direction])
+      }
+
       const resizeWindow = new CustomEvent('resizeWindow',
-        { bubbles: true, composed: true, details: { side: side }})
-      this.dispatchEvent(minimiseWindow)
+        { bubbles: true, composed: true, detail: 
+          { sides, coordinates }})
+      this.dispatchEvent(resizeWindow)
     }
 })
