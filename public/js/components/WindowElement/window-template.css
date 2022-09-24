@@ -11,14 +11,14 @@
 }
 
 :host {
-  font-size: 1.2em;
-  color: #000;
-  left: 500px;
-  width: 500px;
-  height: 200px;
+  min-height: 200px;
+  min-width: 200px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 200px;
+  bottom: 400px;
   overflow: hidden;
-  position: relative;
-  float: left;
   background-color: grey;
 }
 

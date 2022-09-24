@@ -28,8 +28,8 @@ window.customElements.define('border-element',
     }
 
     #onMouseMove = e => {
-      const sides = JSON.parse(this.#currentBorder
-        .getAttribute('data-sides'))
+      const sidesOrDimensions = JSON.parse(this.#currentBorder
+        .getAttribute('data-sides-or-dimensions'))
       const directions = JSON.parse(this.#currentBorder
         .getAttribute('data-directions'))
       
@@ -40,7 +40,7 @@ window.customElements.define('border-element',
 
       const resizeWindow = new CustomEvent('resizeWindow',
         { bubbles: true, composed: true, detail: 
-          { sides, coordinates }})
+          { sidesOrDimensions, coordinates }})
       this.dispatchEvent(resizeWindow)
     }
 })

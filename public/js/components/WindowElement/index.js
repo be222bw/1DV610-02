@@ -5,6 +5,8 @@ import '../MinimiseButton'
 import '../BorderElement'
 window.customElements.define('window-element',
   class extends window.HTMLElement {
+    #clickedBorder
+
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -30,7 +32,8 @@ window.customElements.define('window-element',
     #onClose = e => this.close(e)
     #onMaximise = e => this.maximise(e)
     #onMinimise = e => this.minimise(e)
-    #onResize = e => this.resize(e.detail.sides, e.detail.coordinates)
+    #onResize = e => this.resize(e.detail.sidesOrDimensions,
+      e.detail.coordinates)
     
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'max' && newValue === '') {
@@ -40,11 +43,32 @@ window.customElements.define('window-element',
       }
     }
 
+    getCssFriendlySize(side, magnitude) {
+      let size
+      switch (side) {
+        case 'top':
+          size = magnitude
+          break
+        case 'left':
+          size = magnitude
+          break
+        case 'bottom':
+          size = window.innerHeight - magnitude
+          break
+        case 'right':
+          size = window.innerWidth - magnitude
+      }
+      
+      return size
+    }
+
     maximise(e) {
       if (this.hasAttribute('max')) {
         this.removeAttribute('max')
+        this.addEventListener('resizeWindow', this.#onResize)
       } else {
         this.setAttribute('max', '')
+        this.removeEventListener('resizeWindow', this.#onResize)
       }
     }
     
@@ -60,7 +84,9 @@ window.customElements.define('window-element',
       for (let i = 0; i < sides.length; i++) {
         const side = sides[i]
         const coordinate = coordinates[i]
-        this.style[side] = `${coordinate}px`
+
+        this.style[side] =
+          `${this.getCssFriendlySize(side, coordinate)}px`
       }
     }
 

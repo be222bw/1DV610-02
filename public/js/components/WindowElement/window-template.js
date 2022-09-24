@@ -1,21 +1,21 @@
 export default
 `<link rel="stylesheet" type="text/css" href="js/components/WindowElement/window-template.css">
 <border-element>
-  <div id="topleftside" data-sides='["left", "top"]'
+  <div id="topleftside" data-sides-or-dimensions='["left", "top"]'
     data-directions='["pageX", "pageY"]'></div>
-  <div id="topside" data-sides='["top"]'
+  <div id="topside" data-sides-or-dimensions='["top"]'
     data-directions='["pageY"]'></div>
-  <div id="toprightside" data-sides='["width", "height"]'
+  <div id="toprightside" data-sides-or-dimensions='["right", "top"]'
     data-directions='["pageX", "pageY"]'></div>
-  <div id="rightside" data-sides='["width"]'
+  <div id="rightside" data-sides-or-dimensions='["right"]'
     data-directions='["pageX"]'></div>
-  <div id="bottomrightside" data-sides='["right", "bottom"]'
+  <div id="bottomrightside" data-sides-or-dimensions='["right", "bottom"]'
     data-directions='["pageX", "pageY"]'></div>
-  <div id="bottomside" data-sides='["bottom"]'
+  <div id="bottomside" data-sides-or-dimensions='["bottom"]'
     data-directions='["pageY"]'></div>
-  <div id="bottomleftside" data-sides='["left", "bottom"]'
+  <div id="bottomleftside" data-sides-or-dimensions='["left", "bottom"]'
     data-directions='["pageX", "pageY"]'></div>
-  <div id="leftside" data-sides='["left"]'
+  <div id="leftside" data-sides-or-dimensions='["left"]'
     data-directions='["pageX"]'></div>
 </border-element>
 <title-bar>
