@@ -5,8 +5,6 @@ import '../MinimiseButton'
 import '../BorderElement'
 window.customElements.define('window-element',
   class extends window.HTMLElement {
-    #clickedBorder
-
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -60,6 +58,28 @@ window.customElements.define('window-element',
       }
       
       return size
+    }
+
+    #getDimensionByDirection(direction) {
+      switch (direction) {
+        case 'left':
+        case 'right':
+          return 'width'
+        case 'top':
+        case 'bottom':
+          return 'height'
+      }
+    }
+
+    #getPageByDirection(direction) {
+      switch (direction) {
+        case 'left':
+        case 'right':
+          return 'pageX'
+        case 'top':
+        case 'bottom':
+          return 'pageY'
+      }
     }
 
     maximise(e) {
