@@ -43,7 +43,7 @@ window.customElements.define('window-element',
       }
     }
 
-    getCssFriendlySize(side, magnitude) {
+    #getCssFriendlySize(side, magnitude) {
       let size
       switch (side) {
         case 'top':
@@ -73,7 +73,9 @@ window.customElements.define('window-element',
     }
     
     minimise(e) {
-      this.setAttribute('min', '')
+      if (this.hasAttribute('min')) {
+        this.removeAttribute('min')
+      } this.setAttribute('min', '')
     }
 
     close(e) {
@@ -86,7 +88,7 @@ window.customElements.define('window-element',
         const coordinate = coordinates[i]
 
         this.style[side] =
-          `${this.getCssFriendlySize(side, coordinate)}px`
+          `${this.#getCssFriendlySize(side, coordinate)}px`
       }
     }
 
