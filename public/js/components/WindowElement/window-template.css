@@ -22,10 +22,14 @@
   background-color: grey;
 }
 
+:host([data-active]) title-bar {
+  background-color: blue;
+}
+
 title-bar {
   user-select: none;
-  background: blue;
-  color: #FFF;
+  background: lightslategrey;
+  color: black;
   position: absolute;
   top: 10px;
   left: 10px;

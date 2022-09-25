@@ -3,6 +3,8 @@ import  '../CloseButton'
 import '../MaximiseButton'
 import '../MinimiseButton'
 import '../BorderElement'
+import '../TitleBar'
+
 window.customElements.define('window-element',
   class extends window.HTMLElement {
     constructor () {
@@ -17,6 +19,8 @@ window.customElements.define('window-element',
         this.addEventListener('maximiseWindow', this.#onMaximise)
         this.addEventListener('minimiseWindow', this.#onMinimise)
         this.addEventListener('resizeWindow', this.#onResize)
+        this.addEventListener('moveWindow', this.#moveWindow)
+        this.addEventListener('click', this.#onClick)
       }
     }
 
@@ -25,6 +29,8 @@ window.customElements.define('window-element',
       this.removeEventListener('maximiseWindow', this.#onMaximise)
       this.removeEventListener('minimiseWindow', this.#onMinimise)
       this.removeEventListener('resizeWindow', this.#onResize)
+      this.removeEventListener('moveWindow', this.#onMoveWindow)
+      this.removeEventListener('click', this.#onClick)
     }
 
     #onClose = e => this.close(e)
@@ -32,6 +38,8 @@ window.customElements.define('window-element',
     #onMinimise = e => this.minimise(e)
     #onResize = e => this.resize(e.detail.sidesOrDimensions,
       e.detail.coordinates)
+    #onMoveWindow = e => this.moveWindow(e)
+    #onClick = e => this.activateWindow(e)
     
     attributeChangedCallback(name, oldValue, newValue) {
       if (name === 'max' && newValue === '') {
@@ -84,18 +92,15 @@ window.customElements.define('window-element',
 
     maximise(e) {
       if (this.hasAttribute('max')) {
-        this.removeAttribute('max')
         this.addEventListener('resizeWindow', this.#onResize)
       } else {
-        this.setAttribute('max', '')
         this.removeEventListener('resizeWindow', this.#onResize)
       }
+      this.toggleAttribute('max')
     }
     
     minimise(e) {
-      if (this.hasAttribute('min')) {
-        this.removeAttribute('min')
-      } this.setAttribute('min', '')
+      this.toggleAttribute('min')
     }
 
     close(e) {
@@ -112,7 +117,21 @@ window.customElements.define('window-element',
       }
     }
 
+    activateWindow(e) {
+      console.log('Activate')
+      this.toggleAttribute('data-active')
+    }
+
+    #moveWindow(e) {
+      const xCoordinate = e.xCoordinate
+      const yCoordinate = e.yCoordinate
+      const boundingClient = this.getBoundingClientRect()
+
+      this.style.left = (boundingClient.width - xCoordinate) + 'px'
+      this.style.top = (boundingClient.top - yCoordinate) + 'px'
+    }
+
     static get observedAttributes() {
-      return ['min', 'max']
+      return ['min', 'max', 'active']
     }
   })
