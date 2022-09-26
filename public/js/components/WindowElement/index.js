@@ -41,10 +41,10 @@ class extends window.HTMLElement {
     #onClick = e => this.activateWindow(e)
     
     attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'max' && newValue === '') {
-        this.removeAttribute('min')
-      } else if (name === 'min' && newValue === '') {
-        this.removeAttribute('max')
+      if (name === 'data-max' && newValue === '') {
+        this.removeAttribute('data-min')
+      } else if (name === 'data-min' && newValue === '') {
+        this.removeAttribute('data-max')
       }
     }
 
@@ -108,11 +108,11 @@ class extends window.HTMLElement {
       } else {
         this.removeEventListener('resizeWindow', this.#onResize)
       }
-      this.toggleAttribute('max')
+      this.toggleAttribute('data-max')
     }
     
     minimise(e) {
-      this.toggleAttribute('min')
+      this.toggleAttribute('data-min')
     }
 
     close(e) {
@@ -134,7 +134,6 @@ class extends window.HTMLElement {
         const oppositeSide = this.#getOppositeSide(side)
 
         const newPosition = this.#getCssFriendlySize(side, coordinate)
-        console.log(e.detail[page])
         const dif = Math.abs(newPosition - boundingClientRect[oppositeSide])
 
         if (dif >= minDimension) {
@@ -159,6 +158,6 @@ class extends window.HTMLElement {
     }
 
     static get observedAttributes() {
-      return ['min', 'max', 'active']
+      return ['data-min', 'data-max', 'data-active']
     }
   })
