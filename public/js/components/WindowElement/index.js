@@ -13,6 +13,14 @@ class extends window.HTMLElement {
       this.shadowRoot.innerHTML = windowTemplate
     }
 
+    attributeChangedCallback(name, oldValue, newValue) {
+      if (name === 'data-max' && newValue === '') {
+        this.removeAttribute('data-min')
+      } else if (name === 'data-min' && newValue === '') {
+        this.removeAttribute('data-max')
+      }
+    }
+
     connectedCallback() {
       if (this.isConnected) {
         this.addEventListener('closeWindow', this.#onClose)
@@ -32,7 +40,7 @@ class extends window.HTMLElement {
       this.removeEventListener('moveWindow', this.#onMoveWindow)
       this.removeEventListener('click', this.#onClick)
     }
-
+    
     #onClose = e => this.close(e)
     #onMaximise = e => this.maximise(e)
     #onMinimise = e => this.minimise(e)
@@ -40,70 +48,6 @@ class extends window.HTMLElement {
     #onMoveWindow = e => this.moveWindow(e)
     #onClick = e => this.activateWindow(e)
     
-    attributeChangedCallback(name, oldValue, newValue) {
-      if (name === 'data-max' && newValue === '') {
-        this.removeAttribute('data-min')
-      } else if (name === 'data-min' && newValue === '') {
-        this.removeAttribute('data-max')
-      }
-    }
-
-    #getCssFriendlySize(side, magnitude) {
-      let size
-      switch (side) {
-        case 'top':
-          size = magnitude
-          break
-        case 'left':
-          size = magnitude
-          break
-        case 'bottom':
-          size = window.innerHeight - magnitude
-          break
-        case 'right':
-          size = window.innerWidth - magnitude
-      }
-      
-      return size
-    }
-
-    #getDimensionBySide(side) {
-      switch (side) {
-        case 'left':
-        case 'right':
-          return 'width'
-        case 'top':
-        case 'bottom':
-          return 'height'
-        default:
-          throw new Error('IllegalArgumentException')
-      }
-    }
-
-    #getOppositeSide(direction) {
-      switch (direction) {
-        case 'left':
-          return 'right'
-        case 'right':
-          return 'left'
-        case 'top':
-          return 'bottom'
-        case 'bottom':
-          return 'top'
-      }
-    }
-
-    #getPageByDirection(direction) {
-      switch (direction) {
-        case 'left':
-        case 'right':
-          return 'pageX'
-        case 'top':
-        case 'bottom':
-          return 'pageY'
-      }
-    }
-
     maximise(e) {
       if (this.hasAttribute('max')) {
         this.addEventListener('resizeWindow', this.#onResize)
@@ -125,14 +69,17 @@ class extends window.HTMLElement {
       const sides = e.detail.sides
       const coordinates = e.detail.coordinates
 
+      this.#iterateSidesAndCoordinates(sides, coordinates)
+    }
+
+    #iterateSidesAndCoordinates(sides, coordinates) {
       for (let i = 0; i < sides.length; i++) {
         const boundingClientRect = this.getBoundingClientRect()
         const side = sides[i]
-        const dimension = this.#getDimensionBySide(side)
-        const minDimension = parseInt(window.getComputedStyle
-          (this)[`min-${dimension}`], 10)
-        const coordinate = coordinates[i]
         const oppositeSide = this.#getOppositeSide(side)
+        const dimension = this.#getDimensionBySide(side)
+        const minDimension = this.#getMinDimension(dimension)
+        const coordinate = coordinates[i]
 
         const newPosition = this.#getCssFriendlySize(side, coordinate)
         const dif = Math.abs(coordinate - boundingClientRect[oppositeSide])
@@ -141,6 +88,57 @@ class extends window.HTMLElement {
           this.style[side] = `${newPosition}px`
         }
       }
+    }
+
+    #getOppositeSide(direction) {
+      switch (direction) {
+        case 'left':
+          return 'right'
+        case 'right':
+          return 'left'
+        case 'top':
+          return 'bottom'
+        case 'bottom':
+          return 'top'
+      }
+    }
+    
+    #getDimensionBySide(side) {
+      switch (side) {
+        case 'left':
+        case 'right':
+          return 'width'
+        case 'top':
+        case 'bottom':
+          return 'height'
+        default:
+          throw new Error('IllegalArgumentException')
+      }
+    }
+
+    #getMinDimension(dimension) {
+      const computedDimension =
+        window.getComputedStyle(this)[`min-${dimension}`]
+      return parseInt(computedDimension, 10)
+    }
+
+    #getCssFriendlySize(side, magnitude) {
+      let size
+      switch (side) {
+        case 'top':
+          size = magnitude
+          break
+        case 'left':
+          size = magnitude
+          break
+        case 'bottom':
+          size = window.innerHeight - magnitude
+          break
+        case 'right':
+          size = window.innerWidth - magnitude
+      }
+      
+      return size
     }
 
     activateWindow(e) {
