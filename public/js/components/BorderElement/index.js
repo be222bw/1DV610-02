@@ -43,7 +43,7 @@ window.customElements.define('border-element',
 
       const resizeWindow = new CustomEvent('resizeWindow',
         { bubbles: true, composed: true, detail: 
-          { sides, coordinates, pageX: e.pageX, pageY: e.pageY }})
+          { sides, coordinates }})
       this.dispatchEvent(resizeWindow)
     }
 
