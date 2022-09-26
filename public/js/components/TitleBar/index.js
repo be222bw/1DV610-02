@@ -29,12 +29,12 @@ window.customElements.define('title-bar',
     }
 
     #onMouseMove = e => {
-      const xCoordinate = e.clientX
-      const yCoordinate = e.clientY
+      const clientX = e.clientX
+      const clientY = e.clientY
 
       const moveWindow = new CustomEvent('moveWindow',
         { bubbles: true, composed: true, detail: 
-          { xCoordinate, yCoordinate }})
+          { clientX, clientY }})
       this.dispatchEvent(moveWindow)
     }
 })

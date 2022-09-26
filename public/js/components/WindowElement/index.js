@@ -11,6 +11,10 @@ class extends window.HTMLElement {
       super()
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.innerHTML = windowTemplate
+      this.pos1 = 0
+      this.pos2 = 0
+      this.pos3 = 0
+      this.pos4 = 0
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -27,7 +31,7 @@ class extends window.HTMLElement {
         this.addEventListener('maximiseWindow', this.#onMaximise)
         this.addEventListener('minimiseWindow', this.#onMinimise)
         this.addEventListener('resizeWindow', this.#onResize)
-        this.addEventListener('moveWindow', this.#moveWindow)
+        this.addEventListener('moveWindow', this.#onMoveWindow)
         this.addEventListener('click', this.#onClick)
       }
     }
@@ -45,7 +49,7 @@ class extends window.HTMLElement {
     #onMaximise = e => this.maximise(e)
     #onMinimise = e => this.minimise(e)
     #onResize = e => this.resize(e)
-    #onMoveWindow = e => this.moveWindow(e)
+    #onMoveWindow = e => this.#initMoveWindow(e)
     #onClick = e => this.activateWindow(e)
     
     maximise(e) {
@@ -150,16 +154,31 @@ class extends window.HTMLElement {
       this.setAttribute('data-active', '')
     }
 
-    #moveWindow(e) {
-      const xCoordinate = e.xCoordinate
-      const yCoordinate = e.yCoordinate
-      const boundingClient = this.getBoundingClientRect()
+    #initMoveWindow(e) {
+      console.log('initmove')
+      this.pos3 = e.detail.clientX
+      this.pos4 = e.detail.clientY
 
-      this.style.left = (boundingClient.width - xCoordinate) + 'px'
-      this.style.top = (boundingClient.top - yCoordinate) + 'px'
+      document.addEventListener('mousemove', this.#moveWindow)
+      document.addEventListener('mouseup', this.#exitMoveWindow)
     }
 
     static get observedAttributes() {
       return ['data-min', 'data-max', 'data-active']
+    }
+
+    #moveWindow = (e) => {
+      console.log(e.clientX)
+      this.pos1 = this.pos3 - e.clientX
+      this.pos2 = this.pos4 - e.clientY
+      this.pos3 = e.clientX
+      this.pos4 = e.clientY
+      this.style.top = (this.offsetTop - this.pos2) + 'px'
+      this.style.left = (this.offsetLeft - this.pos1) + 'px'
+    }
+
+    #exitMoveWindow = (e) => {
+      document.removeEventListener('mousemove', this.#moveWindow)
+      this.removeEventListener('mouseup', this.#exitMoveWindow)
     }
   })
