@@ -20,6 +20,7 @@ window.customElements.define('border-element',
       this.#currentBorder = e.target
       window.addEventListener('mousemove', this.#onMouseMove)
       window.addEventListener('mouseup', this.#onMouseUp)
+      this.addEventListener('mouseleave', this.#onMouseLeave)
     }
 
     #onMouseUp = e => {
@@ -40,7 +41,12 @@ window.customElements.define('border-element',
 
       const resizeWindow = new CustomEvent('resizeWindow',
         { bubbles: true, composed: true, detail: 
-          { sidesOrDimensions, coordinates }})
+          { sidesOrDimensions, coordinates, pageX: e.pageX, pageY: e.pageY }})
       this.dispatchEvent(resizeWindow)
+    }
+
+    #onMouseLeave(e) {
+      this.removeEventListener('mousemove', this.#onMouseMove)
+      this.removeEventListener('mouseleave', this.#onMouseLeave)
     }
 })

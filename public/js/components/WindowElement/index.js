@@ -6,7 +6,7 @@ import '../BorderElement'
 import '../TitleBar'
 
 window.customElements.define('window-element',
-  class extends window.HTMLElement {
+class extends window.HTMLElement {
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -36,8 +36,7 @@ window.customElements.define('window-element',
     #onClose = e => this.close(e)
     #onMaximise = e => this.maximise(e)
     #onMinimise = e => this.minimise(e)
-    #onResize = e => this.resize(e.detail.sidesOrDimensions,
-      e.detail.coordinates)
+    #onResize = e => this.resize(e)
     #onMoveWindow = e => this.moveWindow(e)
     #onClick = e => this.activateWindow(e)
     
@@ -79,6 +78,19 @@ window.customElements.define('window-element',
       }
     }
 
+    #getOppositeSide(direction) {
+      switch (direction) {
+        case 'left':
+          return 'right'
+        case 'right':
+          return 'left'
+        case 'top':
+          return 'bottom'
+        case 'bottom':
+          return 'top'
+      }
+    }
+
     #getPageByDirection(direction) {
       switch (direction) {
         case 'left':
@@ -107,18 +119,33 @@ window.customElements.define('window-element',
       this.remove()
     }
 
-    resize(sides, coordinates) {
-      for (let i = 0; i < sides.length; i++) {
-        const side = sides[i]
-        const coordinate = coordinates[i]
+    resize(e) {
+      const sides = e.detail.sidesOrDimensions
+      const coordinates = e.detail.coordinates
 
-        this.style[side] =
-          `${this.#getCssFriendlySize(side, coordinate)}px`
+      for (let i = 0; i < sides.length; i++) {
+        const boundingClientRect = this.getBoundingClientRect()
+        const side = sides[i]
+        const page = this.#getPageByDirection(side)
+        const dimension = this.#getDimensionByDirection(side)
+        const minDimension = parseInt(window.getComputedStyle
+          (this)[`min-${dimension}`], 10)
+        const coordinate = coordinates[i]
+        const oppositeSide = this.#getOppositeSide(side)
+
+        const newPosition = this.#getCssFriendlySize(side, coordinate)
+        console.log(e.detail[page])
+        const dif = Math.abs(newPosition - boundingClientRect[oppositeSide])
+
+        if (dif >= minDimension) {
+          this.style[side] = `${newPosition}px`
+        } else {
+          console.log(dif + 'is too small for ' + minDimension)
+        }
       }
     }
 
     activateWindow(e) {
-      console.log('Activate')
       this.toggleAttribute('data-active')
     }
 
