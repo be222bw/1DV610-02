@@ -1,0 +1,21 @@
+:host {
+  user-select: none;
+  background: lightslategrey;
+  color: black;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: 20px;
+  font-size: 0.75em;
+}
+
+:host p {
+  left: 0;
+  margin: 0;
+  user-select: none;
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -o-user-select: none;
+}

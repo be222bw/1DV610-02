@@ -1,7 +1,11 @@
+import titleBarTemplate from './titlebar-template'
+
 window.customElements.define('title-bar',
   class extends window.HTMLElement {
     constructor () {
       super()
+      this.attachShadow({ mode: 'open' })
+      this.shadowRoot.innerHTML = titleBarTemplate
     }
 
     connectedCallback() {
