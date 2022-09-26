@@ -28,7 +28,7 @@
   margin: 0;
 }
 
-:host .button p {
+:host .button div {
   text-align: center;
 }
 
