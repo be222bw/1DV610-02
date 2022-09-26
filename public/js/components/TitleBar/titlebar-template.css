@@ -19,3 +19,29 @@
   -webkit-user-select: none;
   -o-user-select: none;
 }
+
+#buttoncontainer {
+  top: 0;
+  right: 0;
+  padding: 0;
+  width: 75px;
+  height: 20px;
+  position: absolute;
+}
+
+:host .button {
+  background-color: lightgrey;
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin: 0;
+}
+
+:host .button p {
+  text-align: center;
+}
+
+:host .button:hover {
+  background-color: grey;
+}

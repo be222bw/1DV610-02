@@ -141,6 +141,11 @@ class extends window.HTMLElement {
       return size
     }
 
+    #getDifference(coordinate, oppositeSide) {
+      const boundingClientRect = this.getBoundingClientRect()
+      return Math.abs(coordinate - boundingClientRect[oppositeSide])
+    }
+
     activateWindow(e) {
       this.toggleAttribute('data-active')
     }
