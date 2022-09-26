@@ -10,16 +10,6 @@
   font-size: 0.75em;
 }
 
-:host p {
-  left: 0;
-  margin: 0;
-  user-select: none;
-  -moz-user-select: none;
-  -khtml-user-select: none;
-  -webkit-user-select: none;
-  -o-user-select: none;
-}
-
 #buttoncontainer {
   top: 0;
   right: 0;

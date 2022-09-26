@@ -147,7 +147,7 @@ class extends window.HTMLElement {
     }
 
     activateWindow(e) {
-      this.toggleAttribute('data-active')
+      this.setAttribute('data-active', '')
     }
 
     #moveWindow(e) {
