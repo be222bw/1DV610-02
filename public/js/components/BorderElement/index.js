@@ -1,9 +1,11 @@
+import borderTemplate from './border-template'
 window.customElements.define('border-element',
   class extends window.HTMLElement {
     #currentBorder
 
     constructor () {
       super()
+      this.innerHTML = borderTemplate
     }
 
     connectedCallback() {
@@ -29,8 +31,8 @@ window.customElements.define('border-element',
     }
 
     #onMouseMove = e => {
-      const sidesOrDimensions = JSON.parse(this.#currentBorder
-        .getAttribute('data-sides-or-dimensions'))
+      const sides = JSON.parse(this.#currentBorder
+        .getAttribute('data-sides'))
       const directions = JSON.parse(this.#currentBorder
         .getAttribute('data-directions'))
       
@@ -41,7 +43,7 @@ window.customElements.define('border-element',
 
       const resizeWindow = new CustomEvent('resizeWindow',
         { bubbles: true, composed: true, detail: 
-          { sidesOrDimensions, coordinates, pageX: e.pageX, pageY: e.pageY }})
+          { sides, coordinates, pageX: e.pageX, pageY: e.pageY }})
       this.dispatchEvent(resizeWindow)
     }
 

@@ -67,14 +67,16 @@ class extends window.HTMLElement {
       return size
     }
 
-    #getDimensionByDirection(direction) {
-      switch (direction) {
+    #getDimensionBySide(side) {
+      switch (side) {
         case 'left':
         case 'right':
           return 'width'
         case 'top':
         case 'bottom':
           return 'height'
+        default:
+          throw new Error('IllegalArgumentException')
       }
     }
 
@@ -120,26 +122,23 @@ class extends window.HTMLElement {
     }
 
     resize(e) {
-      const sides = e.detail.sidesOrDimensions
+      const sides = e.detail.sides
       const coordinates = e.detail.coordinates
 
       for (let i = 0; i < sides.length; i++) {
         const boundingClientRect = this.getBoundingClientRect()
         const side = sides[i]
-        const page = this.#getPageByDirection(side)
-        const dimension = this.#getDimensionByDirection(side)
+        const dimension = this.#getDimensionBySide(side)
         const minDimension = parseInt(window.getComputedStyle
           (this)[`min-${dimension}`], 10)
         const coordinate = coordinates[i]
         const oppositeSide = this.#getOppositeSide(side)
 
         const newPosition = this.#getCssFriendlySize(side, coordinate)
-        const dif = Math.abs(newPosition - boundingClientRect[oppositeSide])
+        const dif = Math.abs(coordinate - boundingClientRect[oppositeSide])
 
         if (dif >= minDimension) {
           this.style[side] = `${newPosition}px`
-        } else {
-          console.log(dif + 'is too small for ' + minDimension)
         }
       }
     }
