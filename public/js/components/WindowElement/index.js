@@ -39,17 +39,19 @@ class extends window.HTMLElement {
         this.addEventListener('click', this.#onClick)
       }
     }
-
+    
     disconnectedCallback() {
+      this.removeEventListener('activateWindow', this.activateWindow)
       this.removeEventListener('closeWindow', this.close)
-      this.removeEventListener('maximiseWindow', this.maximise)
       this.removeEventListener('minimiseWindow', this.minimise)
+      this.removeEventListener('maximiseWindow', this.maximise)
       this.removeEventListener('resizeWindow', this.#resize)
       this.removeEventListener('moveWindow', this.#moveWindow)
-      this.removeEventListener('click', this.activateWindow)
     }
     
-    #onClick = () => this.activateWindow()
+    activateWindow = () => this.setAttribute('data-active', '')
+    close = () => this.remove()
+    minimise = () => this.toggleAttribute('data-min')
     
     maximise() {
       if (this.hasAttribute('max')) {
@@ -60,14 +62,21 @@ class extends window.HTMLElement {
       this.toggleAttribute('data-max')
     }
     
-    minimise = () => this.toggleAttribute('data-min')
-    close = () => this.remove()
-
     #resize(e) {
       const sides = e.detail.sides
       const coordinates = e.detail.coordinates
-
+      
       this.#iterateSidesAndCoordinates(sides, coordinates)
+    }
+    
+    #moveWindow = (e) => {
+      console.log(e.clientX)
+      this.#pos1 = this.#pos3 - e.clientX
+      this.#pos2 = this.#pos4 - e.clientY
+      this.#pos3 = e.clientX
+      this.#pos4 = e.clientY
+      this.style.top = (this.offsetTop - this.#pos2) + 'px'
+      this.style.left = (this.offsetLeft - this.#pos1) + 'px'
     }
 
     #iterateSidesAndCoordinates(sides, coordinates) {
@@ -139,19 +148,7 @@ class extends window.HTMLElement {
       return size
     }
 
-    activateWindow = () => this.setAttribute('data-active', '')
-
     static get observedAttributes() {
       return ['data-min', 'data-max', 'data-active']
-    }
-
-    #moveWindow = (e) => {
-      console.log(e.clientX)
-      this.#pos1 = this.#pos3 - e.clientX
-      this.#pos2 = this.#pos4 - e.clientY
-      this.#pos3 = e.clientX
-      this.#pos4 = e.clientY
-      this.style.top = (this.offsetTop - this.#pos2) + 'px'
-      this.style.left = (this.offsetLeft - this.#pos1) + 'px'
     }
   })
