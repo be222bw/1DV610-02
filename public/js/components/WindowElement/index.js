@@ -31,47 +31,37 @@ class extends window.HTMLElement {
 
     connectedCallback() {
       if (this.isConnected) {
-        this.addEventListener('closeWindow', this.#onClose)
-        this.addEventListener('maximiseWindow', this.#onMaximise)
-        this.addEventListener('minimiseWindow', this.#onMinimise)
-        this.addEventListener('resizeWindow', this.#onResize)
-        this.addEventListener('moveWindow', this.#onMoveWindow)
+        this.addEventListener('closeWindow', this.close)
+        this.addEventListener('maximiseWindow', this.maximise)
+        this.addEventListener('minimiseWindow', this.minimise)
+        this.addEventListener('resizeWindow', this.#resize)
+        this.addEventListener('moveWindow', this.#moveWindow)
         this.addEventListener('click', this.#onClick)
       }
     }
 
     disconnectedCallback() {
-      this.removeEventListener('closeWindow', this.#onClose)
-      this.removeEventListener('maximiseWindow', this.#onMaximise)
-      this.removeEventListener('minimiseWindow', this.#onMinimise)
-      this.removeEventListener('resizeWindow', this.#onResize)
-      this.removeEventListener('moveWindow', this.#onMoveWindow)
-      this.removeEventListener('click', this.#onClick)
+      this.removeEventListener('closeWindow', this.close)
+      this.removeEventListener('maximiseWindow', this.maximise)
+      this.removeEventListener('minimiseWindow', this.minimise)
+      this.removeEventListener('resizeWindow', this.#resize)
+      this.removeEventListener('moveWindow', this.#moveWindow)
+      this.removeEventListener('click', this.activateWindow)
     }
     
-    #onClose = e => this.close()
-    #onMaximise = e => this.maximise()
-    #onMinimise = e => this.minimise()
-    #onResize = e => this.#resize(e)
-    #onMoveWindow = e => this.#initMoveWindow(e)
-    #onClick = e => this.activateWindow()
+    #onClick = () => this.activateWindow()
     
     maximise() {
       if (this.hasAttribute('max')) {
-        this.addEventListener('resizeWindow', this.#onResize)
+        this.addEventListener('resizeWindow', this.#resize)
       } else {
-        this.removeEventListener('resizeWindow', this.#onResize)
+        this.removeEventListener('resizeWindow', this.#resize)
       }
       this.toggleAttribute('data-max')
     }
     
-    minimise(e) {
-      this.toggleAttribute('data-min')
-    }
-
-    close(e) {
-      this.remove()
-    }
+    minimise = () => this.toggleAttribute('data-min')
+    close = () => this.remove()
 
     #resize(e) {
       const sides = e.detail.sides
@@ -149,18 +139,7 @@ class extends window.HTMLElement {
       return size
     }
 
-    activateWindow() {
-      this.setAttribute('data-active', '')
-    }
-
-    #initMoveWindow(e) {
-      console.log('initmove')
-      this.pos3 = e.detail.clientX
-      this.pos4 = e.detail.clientY
-
-      document.addEventListener('mousemove', this.#moveWindow)
-      document.addEventListener('mouseup', this.#exitMoveWindow)
-    }
+    activateWindow = () => this.setAttribute('data-active', '')
 
     static get observedAttributes() {
       return ['data-min', 'data-max', 'data-active']
@@ -174,10 +153,5 @@ class extends window.HTMLElement {
       this.#pos4 = e.clientY
       this.style.top = (this.offsetTop - this.#pos2) + 'px'
       this.style.left = (this.offsetLeft - this.#pos1) + 'px'
-    }
-
-    #exitMoveWindow = () => {
-      document.removeEventListener('mousemove', this.#moveWindow)
-      this.removeEventListener('mouseup', this.#exitMoveWindow)
     }
   })
