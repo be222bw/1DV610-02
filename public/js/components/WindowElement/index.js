@@ -89,24 +89,6 @@ class extends window.HTMLElement {
       this.style.left = (this.offsetLeft - this.#pos1) + 'px'
     }
 
-    /* #iterateSidesAndCoordinates(sides, coordinates) {
-      for (let i = 0; i < sides.length; i++) {
-        const boundingClientRect = this.getBoundingClientRect()
-        const side = sides[i]
-        const oppositeSide = this.#getOppositeSide(side)
-        const dimension = this.#getDimensionBySide(side)
-        const minDimension = this.#getMinDimension(dimension)
-        const coordinate = coordinates[i]
-
-        const newPosition = this.#getCssFriendlySize(side, coordinate)
-        const dif = Math.abs(coordinate - boundingClientRect[oppositeSide])
-
-        if (dif >= minDimension) {
-          this.style[side] = `${newPosition}px`
-        }
-      }
-    } */
-
     #getOppositeSide(direction) {
       switch (direction) {
         case 'left':
