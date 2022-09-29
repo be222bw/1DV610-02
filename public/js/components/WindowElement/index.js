@@ -9,18 +9,10 @@ import '../TitleBar'
 
 window.customElements.define('window-element',
 class extends window.HTMLElement {
-  #pos1
-  #pos2
-  #pos3
-  #pos4
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.innerHTML = windowTemplate
-      this.#pos1 = 0
-      this.#pos2 = 0
-      this.#pos3 = 0
-      this.#pos4 = 0
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
