@@ -5,6 +5,8 @@ import '../MinimiseButton'
 import '../BorderElement'
 import '../TitleBar'
 
+'use strict'
+
 window.customElements.define('window-element',
 class extends window.HTMLElement {
   #pos1
@@ -36,7 +38,7 @@ class extends window.HTMLElement {
         this.addEventListener('minimiseWindow', this.minimise)
         this.addEventListener('resizeWindow', this.#resize)
         this.addEventListener('moveWindow', this.#moveWindow)
-        this.addEventListener('click', this.#onClick)
+        this.addEventListener('activateWindow', this.activateWindow)
       }
     }
     
@@ -66,11 +68,19 @@ class extends window.HTMLElement {
       const sides = e.detail.sides
       const coordinates = e.detail.coordinates
       
-      this.#iterateSidesAndCoordinates(sides, coordinates)
+      for (let i = 0; i < sides.length; i++) {
+        const side = sides[i]
+        const coordinate = coordinates[i]
+        if (!this.#wouldBeLessThanMinimum(side, coordinate)) {
+          this[`set${this.#capitaliseFirstLetter(side)}`](coordinate)
+        }
+      }
     }
+
+    #capitaliseFirstLetter = string =>
+      string.charAt(0).toUpperCase() + string.slice(1)
     
     #moveWindow = (e) => {
-      console.log(e.clientX)
       this.#pos1 = this.#pos3 - e.clientX
       this.#pos2 = this.#pos4 - e.clientY
       this.#pos3 = e.clientX
@@ -79,7 +89,7 @@ class extends window.HTMLElement {
       this.style.left = (this.offsetLeft - this.#pos1) + 'px'
     }
 
-    #iterateSidesAndCoordinates(sides, coordinates) {
+    /* #iterateSidesAndCoordinates(sides, coordinates) {
       for (let i = 0; i < sides.length; i++) {
         const boundingClientRect = this.getBoundingClientRect()
         const side = sides[i]
@@ -95,7 +105,7 @@ class extends window.HTMLElement {
           this.style[side] = `${newPosition}px`
         }
       }
-    }
+    } */
 
     #getOppositeSide(direction) {
       switch (direction) {
@@ -121,6 +131,34 @@ class extends window.HTMLElement {
         default:
           throw new Error('IllegalArgumentException')
       }
+    }
+
+    setTop(pixels) {
+      this.style.top = pixels + 'px'
+    }
+
+    setLeft(pixels) {
+      this.style.left = pixels + 'px'
+    }
+
+    setBottom(pixels) {
+      this.style.bottom =
+        this.#getCssFriendlySize('bottom', pixels) + 'px'
+    }
+
+    setRight(pixels) {
+      this.style.right =
+        this.#getCssFriendlySize('right', pixels) + 'px'
+    }
+
+    #wouldBeLessThanMinimum(side, newPosition) {
+      const boundingClientRect = this.getBoundingClientRect()
+      const oppositeSide = this.#getOppositeSide(side)
+      const dimension = this.#getDimensionBySide(side)
+      const minDimension = this.#getMinDimension(dimension)
+      const difference =
+        Math.abs(newPosition - boundingClientRect[oppositeSide])
+      return difference < minDimension
     }
 
     #getMinDimension(dimension) {
