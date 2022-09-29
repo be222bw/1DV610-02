@@ -11,7 +11,6 @@ window.customElements.define('title-bar',
     connectedCallback() {
       if (this.isConnected) {
         this.addEventListener('mousedown', this.#onMouseDown)
-        this.addEventListener('click', this.#onClick)
       }
     }
 
@@ -22,9 +21,6 @@ window.customElements.define('title-bar',
     #onMouseDown = e =>  {
       window.addEventListener('mousemove', this.#onMouseMove)
       window.addEventListener('mouseup', this.#onMouseUp)
-    }
-
-    #onClick = e => {
       const activateWindow = new CustomEvent('activateWindow',
       { bubbles: true, composed: true })
       this.dispatchEvent(activateWindow)
@@ -39,8 +35,6 @@ window.customElements.define('title-bar',
       console.log(e.pageX)
       const movementX = e.movementX
       const movementY = e.movementY
-
-      
 
       const moveWindow = new CustomEvent('moveWindow',
         { bubbles: true, composed: true, detail: 
