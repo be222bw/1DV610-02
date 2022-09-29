@@ -81,12 +81,11 @@ class extends window.HTMLElement {
       string.charAt(0).toUpperCase() + string.slice(1)
     
     #moveWindow = (e) => {
-      this.#pos1 = this.#pos3 - e.clientX
-      this.#pos2 = this.#pos4 - e.clientY
-      this.#pos3 = e.clientX
-      this.#pos4 = e.clientY
-      this.style.top = (this.offsetTop - this.#pos2) + 'px'
-      this.style.left = (this.offsetLeft - this.#pos1) + 'px'
+      const movementX = e.detail.movementX
+      const movementY = e.detail.movementY
+
+      this.moveHorizontally(movementX)
+      this.moveVertically(movementY)
     }
 
     #getOppositeSide(direction) {
@@ -113,6 +112,19 @@ class extends window.HTMLElement {
         default:
           throw new Error('IllegalArgumentException')
       }
+    }
+
+    
+    moveVertically(movement) {
+      const boundingClientRect = this.getBoundingClientRect()
+      this.setTop(boundingClientRect.top + movement)
+      this.setBottom(boundingClientRect.bottom + movement)
+    }
+    
+    moveHorizontally(movement) {
+      const boundingClientRect = this.getBoundingClientRect()
+      this.setLeft(boundingClientRect.left + movement)
+      this.setRight(boundingClientRect.right + movement)
     }
 
     setTop(pixels) {

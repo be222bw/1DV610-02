@@ -36,12 +36,15 @@ window.customElements.define('title-bar',
     }
 
     #onMouseMove = e => {
-      const clientX = e.clientX
-      const clientY = e.clientY
+      console.log(e.pageX)
+      const movementX = e.movementX
+      const movementY = e.movementY
+
+      
 
       const moveWindow = new CustomEvent('moveWindow',
         { bubbles: true, composed: true, detail: 
-          { clientX, clientY }})
+          { movementX, movementY }})
       this.dispatchEvent(moveWindow)
     }
 })
