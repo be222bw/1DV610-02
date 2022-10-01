@@ -35,3 +35,8 @@
 :host .button:hover {
   background-color: grey;
 }
+
+:host #title {
+  color: white;
+  font-size: 1.75em;
+}

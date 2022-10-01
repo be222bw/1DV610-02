@@ -2,6 +2,8 @@ import titleBarTemplate from './titlebar-template'
 
 window.customElements.define('title-bar',
   class extends window.HTMLElement {
+    #title
+
     constructor () {
       super()
       this.attachShadow({ mode: 'open' })
@@ -10,9 +12,16 @@ window.customElements.define('title-bar',
 
     connectedCallback() {
       if (this.isConnected) {
+        this.#title = this.shadowRoot.querySelector('#title')
         this.addEventListener('mousedown', this.#onMouseDown)
       }
     }
+
+    setTitle(title) {
+      this.#title.innerHTML = title
+    }
+
+    getTitle = () => this.#title.innerHTML
 
     disconnectedCallback() {
       this.removeEventListener('mousedown', this.#onMouseDown)

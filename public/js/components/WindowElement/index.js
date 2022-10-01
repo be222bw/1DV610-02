@@ -20,6 +20,8 @@ class extends window.HTMLElement {
         this.removeAttribute('data-min')
       } else if (name === 'data-min' && newValue === '') {
         this.removeAttribute('data-max')
+      } else if (name === 'data-title') {
+        this.shadowRoot.querySelector('title-bar').setTitle(newValue)
       }
     }
 
@@ -173,6 +175,6 @@ class extends window.HTMLElement {
     }
 
     static get observedAttributes() {
-      return ['data-min', 'data-max', 'data-active']
+      return ['data-min', 'data-max', 'data-active', 'data-title']
     }
   })
