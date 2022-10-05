@@ -26,13 +26,10 @@ window.customElements.define('title-bar',
     disconnectedCallback() {
       this.removeEventListener('mousedown', this.#onMouseDown)
     }
-    
+
     #onMouseDown = e =>  {
       window.addEventListener('mousemove', this.#onMouseMove)
       window.addEventListener('mouseup', this.#onMouseUp)
-      const activateWindow = new CustomEvent('activateWindow',
-      { bubbles: true, composed: true })
-      this.dispatchEvent(activateWindow)
     }
 
     #onMouseUp = e => {

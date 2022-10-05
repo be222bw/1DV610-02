@@ -30,34 +30,42 @@ class extends window.HTMLElement {
         this.addEventListener('closeWindow', this.close)
         this.addEventListener('maximiseWindow', this.maximise)
         this.addEventListener('minimiseWindow', this.minimise)
+        this.addEventListener('mouseDown', this.activateWindow)
         this.addEventListener('resizeWindow', this.#resize)
         this.addEventListener('moveWindow', this.#moveWindow)
-        this.addEventListener('activateWindow', this.activateWindow)
       }
     }
     
     disconnectedCallback() {
-      this.removeEventListener('activateWindow', this.activateWindow)
       this.removeEventListener('closeWindow', this.close)
       this.removeEventListener('minimiseWindow', this.minimise)
       this.removeEventListener('maximiseWindow', this.maximise)
+      this.removeEventListener('mouseDown', this.activateWindow)
       this.removeEventListener('resizeWindow', this.#resize)
       this.removeEventListener('moveWindow', this.#moveWindow)
     }
     
-    activateWindow = () => this.setAttribute('data-active', '')
     close = () => this.remove()
     minimise = () => this.toggleAttribute('data-min')
     
     maximise() {
-      if (this.hasAttribute('max')) {
-        this.addEventListener('resizeWindow', this.#resize)
-      } else {
-        this.removeEventListener('resizeWindow', this.#resize)
-      }
       this.toggleAttribute('data-max')
+      if (this.hasAttribute('data-max')) {
+        this.removeEventListener('resizeWindow', this.#resize)
+      } else {
+        this.addEventListener('resizeWindow', this.#resize)
+      }
     }
     
+    activateWindow() {
+      console.log('Activate')
+      this.setAttribute('data-active', '')
+      document.appendChild(this)
+      const activateWindow = new CustomEvent('activateWindow',
+      { bubbles: true, composed: true })
+      this.dispatchEvent(activateWindow)
+    }
+
     #resize(e) {
       const sides = e.detail.sides
       const coordinates = e.detail.coordinates
