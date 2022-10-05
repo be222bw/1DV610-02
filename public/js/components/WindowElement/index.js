@@ -122,36 +122,50 @@ class extends window.HTMLElement {
       switch (side) {
         case 'left':
           this.setLeft(pixels)
+          break
         case 'top':
           this.setTop(pixels)
+          break
         case 'right':
           this.setRight(pixels)
+          break
         case 'bottom':
           this.setBottom(pixels)
       }
     }
+    
+    setLeft(pixels) {
+      const boundingClientRect = this.getBoundingClientRect()
+      this.style.setProperty('--translate-x', `${pixels}px`)
+      const oldWidth = boundingClientRect.width
+      const oldLeft = boundingClientRect.left
+      this.style.width = (oldWidth - pixels + oldLeft) + 'px'
+    }
 
     setTop(pixels) {
       const boundingClientRect = this.getBoundingClientRect()
+      this.style.setProperty('--translate-y', `${pixels}px`)
+      const oldHeight = boundingClientRect.height
+      const oldTop = boundingClientRect.top
+      this.style.height = (oldHeight - pixels + oldTop) + 'px'
     }
 
-    setLeft(pixels) {
-      const oldX = parseInt(this.style.getPropertyValue('--translate-x'))
-      const oldWidth = this.getBoundingClientRect().width
-      console.log(oldWidth)
-      this.style.width = (oldWidth + pixels) + 'px'
-      this.style.setProperty('--translate-x', `${pixels}px`)
+    setRight(pixels) {
+      const boundingClientRect = this.getBoundingClientRect()
+      const oldRight = boundingClientRect.right
+      const oldWidth = boundingClientRect.width
+      this.style.width = (oldWidth + pixels - oldRight) + 'px'
     }
 
     setBottom(pixels) {
       const boundingClientRect = this.getBoundingClientRect()
+      const oldBottom = boundingClientRect.bottom
+      const oldHeight = boundingClientRect.height
+      this.style.height = (oldHeight + pixels - oldBottom) + 'px'
     }
 
-    setRight(pixels) {
-      const oldRight = this.getBoundingClientRect().right
-      const oldWidth = this.getBoundingClientRect().width
-      this.style.width = (oldWidth + (pixels - oldRight)) + 'px'
-    }
+
+
 
     #wouldBeLessThanMinimum(side, newPosition) {
       const boundingClientRect = this.getBoundingClientRect()
