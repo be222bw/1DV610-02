@@ -11,15 +11,16 @@
 }
 
 :host {
+  --translate-x: 20px;
+  --translate-y: 20px;
   min-height: 200px;
   min-width: 200px;
   position: absolute;
   top: 0;
   left: 0;
-  right: 200px;
-  bottom: 400px;
   overflow: hidden;
   background-color: grey;
+  transform: translate(var(--translate-x, 0), var(--translate-y, 0));
 }
 
 :host([data-active]) title-bar {

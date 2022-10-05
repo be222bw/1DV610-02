@@ -41,7 +41,6 @@ window.customElements.define('title-bar',
     }
 
     #onMouseMove = e => {
-      console.log(e.pageX)
       const movementX = e.movementX
       const movementY = e.movementY
 

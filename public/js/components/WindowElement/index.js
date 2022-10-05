@@ -63,16 +63,13 @@ class extends window.HTMLElement {
       const coordinates = e.detail.coordinates
       
       for (let i = 0; i < sides.length; i++) {
-        const side = sides[i]
+        let side = sides[i]
         const coordinate = coordinates[i]
         if (!this.#wouldBeLessThanMinimum(side, coordinate)) {
-          this[`set${this.#capitaliseFirstLetter(side)}`](coordinate)
+          this.setSide(side, coordinate)
         }
       }
     }
-
-    #capitaliseFirstLetter = string =>
-      string.charAt(0).toUpperCase() + string.slice(1)
     
     #moveWindow = (e) => {
       const movementX = e.detail.movementX
@@ -111,32 +108,49 @@ class extends window.HTMLElement {
     
     moveVertically(movement) {
       const boundingClientRect = this.getBoundingClientRect()
-      this.setTop(boundingClientRect.top + movement)
-      this.setBottom(boundingClientRect.bottom + movement)
+      this.style.setProperty('--translate-y', `${boundingClientRect.y + 
+        movement}px`)
     }
     
     moveHorizontally(movement) {
       const boundingClientRect = this.getBoundingClientRect()
-      this.setLeft(boundingClientRect.left + movement)
-      this.setRight(boundingClientRect.right + movement)
+      this.style.setProperty('--translate-x', `${boundingClientRect.x + 
+        movement}px`)
+    }
+
+    setSide(side, pixels) {
+      switch (side) {
+        case 'left':
+          this.setLeft(pixels)
+        case 'top':
+          this.setTop(pixels)
+        case 'right':
+          this.setRight(pixels)
+        case 'bottom':
+          this.setBottom(pixels)
+      }
     }
 
     setTop(pixels) {
-      this.style.top = pixels + 'px'
+      const boundingClientRect = this.getBoundingClientRect()
     }
 
     setLeft(pixels) {
-      this.style.left = pixels + 'px'
+      const oldX = parseInt(this.style.getPropertyValue('--translate-x'))
+      const oldWidth = this.getBoundingClientRect().width
+      console.log(oldWidth)
+      this.style.width = (oldWidth + pixels) + 'px'
+      this.style.setProperty('--translate-x', `${pixels}px`)
     }
 
     setBottom(pixels) {
-      this.style.bottom =
-        this.#getCssFriendlySize('bottom', pixels) + 'px'
+      const boundingClientRect = this.getBoundingClientRect()
     }
 
     setRight(pixels) {
-      this.style.right =
-        this.#getCssFriendlySize('right', pixels) + 'px'
+      const oldRight = this.getBoundingClientRect().right
+      const oldWidth = this.getBoundingClientRect().width
+      this.style.width = (oldWidth + (pixels - oldRight)) + 'px'
     }
 
     #wouldBeLessThanMinimum(side, newPosition) {
@@ -153,25 +167,6 @@ class extends window.HTMLElement {
       const computedDimension =
         window.getComputedStyle(this)[`min-${dimension}`]
       return parseInt(computedDimension, 10)
-    }
-
-    #getCssFriendlySize(side, magnitude) {
-      let size
-      switch (side) {
-        case 'top':
-          size = magnitude
-          break
-        case 'left':
-          size = magnitude
-          break
-        case 'bottom':
-          size = window.innerHeight - magnitude
-          break
-        case 'right':
-          size = window.innerWidth - magnitude
-      }
-      
-      return size
     }
 
     static get observedAttributes() {
