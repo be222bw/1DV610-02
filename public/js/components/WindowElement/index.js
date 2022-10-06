@@ -30,7 +30,7 @@ class extends window.HTMLElement {
         this.addEventListener('closeWindow', this.close)
         this.addEventListener('maximiseWindow', this.maximise)
         this.addEventListener('minimiseWindow', this.minimise)
-        this.addEventListener('mouseDown', this.activateWindow)
+        document.addEventListener('mousedown', this.#activateOrDeactivateWindow)
         this.addEventListener('resizeWindow', this.#resize)
         this.addEventListener('moveWindow', this.#moveWindow)
       }
@@ -40,7 +40,7 @@ class extends window.HTMLElement {
       this.removeEventListener('closeWindow', this.close)
       this.removeEventListener('minimiseWindow', this.minimise)
       this.removeEventListener('maximiseWindow', this.maximise)
-      this.removeEventListener('mouseDown', this.activateWindow)
+      this.removeEventListener('mousedown', this.#activateOrDeactivateWindow)
       this.removeEventListener('resizeWindow', this.#resize)
       this.removeEventListener('moveWindow', this.#moveWindow)
     }
@@ -57,14 +57,31 @@ class extends window.HTMLElement {
       }
     }
     
-    activateWindow() {
-      console.log('Activate')
-      this.setAttribute('data-active', '')
-      document.appendChild(this)
-      const activateWindow = new CustomEvent('activateWindow',
-      { bubbles: true, composed: true })
-      this.dispatchEvent(activateWindow)
+    #activateOrDeactivateWindow = (e) => {
+      if (e.target === this) {
+        if (!this.hasAttribute('data-active')) {
+          this.activateWindow()
+        }
+      } else {
+        this.deactivateWindow()
+      }
     }
+
+    activateWindow() {
+      this.setAttribute('data-active', '')
+      document.body.appendChild(this)
+      const activateWindowEvent = new CustomEvent('activateWindow',
+      { bubbles: true, composed: true })
+      this.dispatchEvent(activateWindowEvent)
+    }
+
+    deactivateWindow() {
+      this.removeAttribute('data-active')
+      const deactivateWindowEvent = new CustomEvent('deactivateWindow',
+      { bubbles: true, composed: true })
+      this.dispatchEvent(deactivateWindowEvent)
+    }
+    
 
     #resize(e) {
       const sides = e.detail.sides
@@ -171,9 +188,6 @@ class extends window.HTMLElement {
       const oldHeight = boundingClientRect.height
       this.style.height = (oldHeight + pixels - oldBottom) + 'px'
     }
-
-
-
 
     #wouldBeLessThanMinimum(side, newPosition) {
       const boundingClientRect = this.getBoundingClientRect()
