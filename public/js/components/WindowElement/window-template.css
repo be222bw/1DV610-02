@@ -28,30 +28,3 @@
 border-element div {
   background-color: lightgrey;
 }
-
-close-button {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
-
-maximise-button {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
-
-minimise-button {
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
