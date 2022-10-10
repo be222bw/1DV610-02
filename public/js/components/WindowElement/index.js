@@ -45,6 +45,8 @@ class extends window.HTMLElement {
       this.removeEventListener('moveWindow', this.#moveWindow)
     }
     
+    setTitle = (title) =>
+      this.shadowRoot.querySelector('title-bar').setTitle(title)
     close = () => this.remove()
     minimise = () => this.toggleAttribute('data-min')
     
@@ -114,6 +116,8 @@ class extends window.HTMLElement {
           return 'bottom'
         case 'bottom':
           return 'top'
+        default:
+          throw new Error('IllegalArgumentException')
       }
     }
     
@@ -156,6 +160,8 @@ class extends window.HTMLElement {
           break
         case 'bottom':
           this.setBottom(pixels)
+        default:
+          throw new Error('IllegalArgumentException')
       }
     }
     
