@@ -25,7 +25,7 @@
     "url": "https://github.com/be222bw/1DV610-02/issues"
   },
   "homepage": "https://github.com/be222bw/1DV610-02#readme",
-  "devDependencies": {
+  "dependencies": {
     "snowpack": "^3.8.8"
   }
 }
