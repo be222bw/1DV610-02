@@ -189,13 +189,13 @@ class extends window.HTMLElement {
       this.style.height = (oldHeight + pixels - oldBottom) + 'px'
     }
 
-    #wouldBeLessThanMinimum(side, newPosition) {
+    #wouldBeLessThanMinimum(side, newCoordinate) {
       const boundingClientRect = this.getBoundingClientRect()
       const oppositeSide = this.#getOppositeSide(side)
       const dimension = this.#getDimensionBySide(side)
       const minDimension = this.#getMinDimension(dimension)
       const difference =
-        Math.abs(newPosition - boundingClientRect[oppositeSide])
+        Math.abs(newCoordinate - boundingClientRect[oppositeSide])
       return difference < minDimension
     }
 
