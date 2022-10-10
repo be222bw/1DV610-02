@@ -1,17 +1,16 @@
 :host div {
+  position: absolute;
   background-color: lightgrey;
 }
 
 
 #topleftside {
-  position: absolute;
   width: 10px;
   height: 10px;
   cursor: nw-resize;
 }
 
 #bottomside {
-  position: absolute;
   bottom: 0;
   left: 10px;
   width: calc(100% - 20px);
@@ -20,7 +19,6 @@
 }
 
 #topside {
-  position: absolute;
   top: 0;
   left: 10px;
   width: calc(100% - 20px);
@@ -29,7 +27,6 @@
 }
 
 #toprightside {
-  position: absolute;
   right: 0;
   width: calc(100% - 20px);
   height: 10px;
@@ -38,7 +35,6 @@
 }
 
 #bottomrightside {
-  position: absolute;
   bottom: 0;
   right: 0;
   width: 10px;
@@ -47,7 +43,6 @@
 }
 
 #bottomleftside {
-  position: absolute;
   bottom: 0;
   left: 0;
   width: 10px;
@@ -57,7 +52,6 @@
 
 #leftside {
   top: 10px;
-  position: absolute;
   left: 0;
   width: 10px;
   height: calc(100% - 20px);
@@ -65,57 +59,9 @@
 }
 
 #rightside {
-  position: absolute;
   right: 0;
   top: 10px;
   width: 10px;
   height: calc(100% - 20px);
   cursor: e-resize;
-}
-
-#buttoncontainer {
-  top: 0;
-  right: 0;
-  padding: 0;
-  width: 75px;
-  height: 20px;
-  position: absolute;
-}
-
-close-button {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
-
-maximise-button {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
-
-minimise-button {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  padding: 0;
-  margin: 0;
-  background-color: lightgrey;
-  color: black;
-}
-
-.button p {
-  text-align: center;
-}
-
-.button:hover {
-  background-color: grey;
 }

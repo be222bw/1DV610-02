@@ -29,17 +29,7 @@ border-element div {
   background-color: lightgrey;
 }
 
-#buttoncontainer {
-  top: 0;
-  right: 0;
-  padding: 0;
-  width: 75px;
-  height: 20px;
-  position: absolute;
-}
-
 close-button {
-  display: inline-block;
   width: 20px;
   height: 20px;
   padding: 0;
@@ -49,7 +39,6 @@ close-button {
 }
 
 maximise-button {
-  display: inline-block;
   width: 20px;
   height: 20px;
   padding: 0;
@@ -59,7 +48,6 @@ maximise-button {
 }
 
 minimise-button {
-  display: inline-block;
   width: 20px;
   height: 20px;
   padding: 0;
