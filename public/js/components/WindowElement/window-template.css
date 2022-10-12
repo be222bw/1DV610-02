@@ -25,6 +25,11 @@
   background-color: blue;
 }
 
-border-element div {
-  background-color: lightgrey;
+:host #content {
+  background-color: white;
+  top: 30px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 40px);
+  overflow: scroll;
 }

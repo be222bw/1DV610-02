@@ -44,6 +44,11 @@ class extends window.HTMLElement {
       this.removeEventListener('resizeWindow', this.#resize)
       this.removeEventListener('moveWindow', this.#moveWindow)
     }
+
+    setContent(innerHTML) {
+      this.shadowRoot.querySelector('#content').innerHTML =
+        innerHTML
+    }
     
     setTitle = (title) =>
       this.shadowRoot.querySelector('title-bar').setTitle(title)
@@ -160,7 +165,9 @@ class extends window.HTMLElement {
           break
         case 'bottom':
           this.setBottom(pixels)
+          break
         default:
+          console.log(side)
           throw new Error('IllegalArgumentException')
       }
     }
