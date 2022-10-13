@@ -9,7 +9,12 @@ import '../TitleBar'
 
 window.customElements.define('window-element',
 class extends window.HTMLElement {
-    constructor () {
+  constructor (innerHTML) {
+    this()
+    this.#setContent(innerHTML)
+  }
+
+  constructor () {
       super()
       this.attachShadow({ mode: 'open' })
       this.shadowRoot.innerHTML = windowTemplate
@@ -45,7 +50,8 @@ class extends window.HTMLElement {
       this.removeEventListener('moveWindow', this.#moveWindow)
     }
 
-    setContent(innerHTML) {
+
+    #setContent(innerHTML) {
       this.shadowRoot.querySelector('#content').innerHTML =
         innerHTML
     }
