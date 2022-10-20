@@ -69,8 +69,7 @@ class extends window.HTMLElement {
     this.removeEventListener('moveWindow', this.#moveWindow)
   }
 
-
-  #setContent(innerHTML) {
+  setContent(innerHTML) {
     this.shadowRoot.querySelector('#content').innerHTML =
       innerHTML
   }
@@ -79,9 +78,21 @@ class extends window.HTMLElement {
     this.shadowRoot.querySelector('title-bar').setTitle(title)
   close = () => this.remove()
   minimise = () => this.toggleAttribute('data-min')
+
+  #dispatchEvent(name, detail) {
+    this.dispatchEvent(new CustomEvent(name,
+      {bubbles: true, composed: true, detail}))
+  }
   
-  maximise() {
+  maximise = (e) => {
+    e.stopPropagation()
     this.toggleAttribute('data-max')
+    this.#toggleResize()
+    this.#dispatchEvent('wasMaximised', {isMaximised:
+      this.hasAttribute('data-max')})
+  }
+
+  #toggleResize() {
     if (this.hasAttribute('data-max')) {
       this.removeEventListener('resizeWindow', this.#resize)
     } else {
@@ -102,20 +113,16 @@ class extends window.HTMLElement {
   activateWindow() {
     this.setAttribute('data-active', '')
     document.body.appendChild(this)
-    const activateWindowEvent = new CustomEvent('activateWindow',
-    { bubbles: true, composed: true })
-    this.dispatchEvent(activateWindowEvent)
+    this.#dispatchEvent('activateWindow')
   }
 
   deactivateWindow() {
     this.removeAttribute('data-active')
-    const deactivateWindowEvent = new CustomEvent('deactivateWindow',
-    { bubbles: true, composed: true })
-    this.dispatchEvent(deactivateWindowEvent)
+    this.#dispatchEvent('deactivateWindow')
   }
-  
 
   #resize(e) {
+    e.stopPropagation()
     const sides = e.detail.sides
     const coordinates = e.detail.coordinates
     
@@ -126,14 +133,19 @@ class extends window.HTMLElement {
         this.setSide(side, coordinate)
       }
     }
+
+    this.#dispatchEvent('wasResized', {sides, coordinates})
   }
   
   #moveWindow = (e) => {
+    e.stopPropagation()
     const movementX = e.detail.movementX
     const movementY = e.detail.movementY
 
     this.moveHorizontally(movementX)
     this.moveVertically(movementY)
+
+    this.#dispatchEvent('wasMoved', {movementX, movementY})
   }
 
   #getOppositeSide(direction) {
