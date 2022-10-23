@@ -16,20 +16,22 @@ class extends window.HTMLElement {
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
-    console.log(name)
-    if (name === 'data-max' && newValue === '') {
-      this.removeAttribute('data-min')
-    } else if (name === 'data-min' && newValue === '') {
-      this.removeAttribute('data-max')
-    } else if (name === 'data-title') {
-      this.shadowRoot.querySelector('title-bar').setTitle(newValue)
+    if (name === 'data-title') {
+      this.setTitle(newValue)
     } else if (name === 'data-application') {
-      const objectName = this.#getImportableString(newValue)
-      console.log(objectName)
-      import(`../${objectName}/index.js`)
-      const application = document.createElement(newValue)
-      this.shadowRoot.querySelector('#content').appendChild(application)
+      this.#setApplication(newValue)
     }
+  }
+
+  #setApplication (value) {
+    const objectName = this.#getImportableString(value)
+    import(`../${objectName}/index.js`)
+    const application = document.createElement(value)
+    this.shadowRoot.querySelector('#content').appendChild(application)
+  }
+
+  setTitle (title) {
+    this.shadowRoot.querySelector('title-bar').setTitle(title)
   }
 
   #getImportableString (elementName) {
@@ -39,9 +41,8 @@ class extends window.HTMLElement {
       if (i === 0) {
         string += currentCharacter.toUpperCase()
       } else if (currentCharacter === '-') {
-        const nextCharacter = elementName.charAt(i + 1).toUpperCase()
+        const nextCharacter = elementName.charAt(++i).toUpperCase()
         string += nextCharacter
-        i++
       } else {
         string += currentCharacter
       }
@@ -77,7 +78,6 @@ class extends window.HTMLElement {
   setTitle = (title) =>
     this.shadowRoot.querySelector('title-bar').setTitle(title)
   close = () => this.remove()
-  minimise = () => this.toggleAttribute('data-min')
 
   #dispatchEvent(name, detail) {
     this.dispatchEvent(new CustomEvent(name,
@@ -88,8 +88,15 @@ class extends window.HTMLElement {
     e.stopPropagation()
     this.toggleAttribute('data-max')
     this.#toggleResize()
-    this.#dispatchEvent('wasMaximised', {isMaximised:
-      this.hasAttribute('data-max')})
+    this.#dispatchEvent('wasMaximised', { isMaximised:
+      this.hasAttribute('data-max') })
+  }
+
+  minimise (e) {
+    e.stopPropagation()
+    this.toggleAttribute('data-min')
+    this.#dispatchEvent('wasMinimised', { isMinimised:
+      this.hasAttribute('data-min') })
   }
 
   #toggleResize() {
@@ -176,7 +183,6 @@ class extends window.HTMLElement {
     }
   }
 
-  
   moveVertically(movement) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-y', `${boundingClientRect.y + 
@@ -204,7 +210,6 @@ class extends window.HTMLElement {
         this.setBottom(pixels)
         break
       default:
-        console.log(side)
         throw new Error('IllegalArgumentException')
     }
   }
