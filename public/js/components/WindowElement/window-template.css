@@ -25,11 +25,18 @@
   background-color: blue;
 }
 
-:host #content {
+#content {
   background-color: white;
   top: 30px;
   left: 10px;
   width: calc(100% - 20px);
   height: calc(100% - 40px);
   overflow: scroll;
+}
+
+host ::slotted(*) {
+  top: 30px;
+  left: 10px;
+  width: calc(100% - 20px);
+  height: calc(100% - 40px);
 }

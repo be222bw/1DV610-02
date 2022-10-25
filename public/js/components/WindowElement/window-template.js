@@ -5,4 +5,6 @@ export default
 <border-element>
 </border-element>
 <div id="content">
+  <slot name="content"></slot>
+</div>
 `

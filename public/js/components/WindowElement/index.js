@@ -18,16 +18,7 @@ class extends window.HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (name === 'data-title') {
       this.setTitle(newValue)
-    } else if (name === 'data-application') {
-      this.#setApplication(newValue)
     }
-  }
-
-  #setApplication (value) {
-    const objectName = this.#getImportableString(value)
-    import(`../${objectName}/index.js`)
-    const application = document.createElement(value)
-    this.shadowRoot.querySelector('#content').appendChild(application)
   }
 
   setTitle (title) {
@@ -68,11 +59,6 @@ class extends window.HTMLElement {
     this.removeEventListener('mousedown', this.#activateOrDeactivateWindow)
     this.removeEventListener('resizeWindow', this.#resize)
     this.removeEventListener('moveWindow', this.#moveWindow)
-  }
-
-  setContent(innerHTML) {
-    this.shadowRoot.querySelector('#content').innerHTML =
-      innerHTML
   }
   
   setTitle = (title) =>
@@ -261,7 +247,6 @@ class extends window.HTMLElement {
   }
 
   static get observedAttributes() {
-    return ['data-min', 'data-max', 'data-active', 'data-title',
-      'data-application']
+    return ['data-min', 'data-max', 'data-active', 'data-title']
   }
 })
