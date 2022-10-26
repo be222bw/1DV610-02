@@ -63,7 +63,12 @@ class extends window.HTMLElement {
   
   setTitle = (title) =>
     this.shadowRoot.querySelector('title-bar').setTitle(title)
-  close = () => this.remove()
+
+  close(e) {
+    e.stopPropagation()
+    this.#dispatchEvent('wasClosed')
+    this.remove()
+  }
 
   #dispatchEvent(name, detail) {
     this.dispatchEvent(new CustomEvent(name,

@@ -2,11 +2,21 @@
 
 
 ## Introduction
-The window is closable, minimisable (although that will just hide it, as no menu for retrieving minimised windows has been implemented) and maximisable. The window is also resizable in eight directions and movable.
+This web component represents a window in an operating system.
+
+The window is closable, minimisable (although that will just hide it, as no menu for retrieving minimised windows has been implemented, but the window can also be de-minimised by calling the method *minimise*) and maximisable. The window is also resizable in eight directions and movable.
 
 A Javascript developer may use a few methods to modify his window, including close, minimise, maximise, moveVertically, moveHorisontally, setRight, setLeft, setTop, setBottom, activateWindow deactivateWindow and setTitle, whose names ought to speak for themselves.
 
-Even so, the developer is encouraged to listen for the custom events closeWindow, maximiseWindow, minimiseWindow, resizeWindow and moveWindow, if he wants to implement his own logic. A lot of the methods with more complex behaviour have ben set to private.
+Even so, the developer is encouraged to listen for the custom events *wasClosed*, *wasMaximised*, *wasMinimised*, *wasResized* and *wasMoved*, if he wants to implement his own logic. A lot of the methods with more complex behaviour have been set to private.
 
-Due to lack of time, no "populating" of the window, i.e. setting the client content, has been implemented, but the manual testing shows no apparent faults. The web component has been tested with basic usage, since the requirements for a window are difficult to test automatically through unit testing.
+The user can populate the window through the slot named content, i.e.
+    <window-element>
+      <element-name slot="content"></element-name>
+    <window-element/>
 
+## Installation
+
+To install the module, run "git clone https://github.com/be222bw/1DV610-02.git" in the directory you want to install it. The module uses Snowpack to run, so before you can run it, you have to also run "npm install" in the terminal.
+
+To run the test application, run "npm start" in the terminal.
