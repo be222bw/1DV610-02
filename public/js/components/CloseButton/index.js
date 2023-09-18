@@ -5,17 +5,17 @@ window.customElements.define('close-button',
     }
 
     
-    connectedCallback() {
+    connectedCallback () {
       if (this.isConnected) {
         this.addEventListener('click', this.#onClick)
       }
     }
     
-    disconnectedCallback() {
+    disconnectedCallback () {
       this.removeEventListener('click', this.#onClick)
     }
     
-    #onClick = e =>  {
+    #onClick = e => {
       const closeWindow = new CustomEvent('closeWindow',
         { bubbles: true, composed: true })
       this.dispatchEvent(closeWindow)

@@ -10,20 +10,20 @@ window.customElements.define('title-bar',
       this.shadowRoot.innerHTML = titleBarTemplate
     }
 
-    connectedCallback() {
+    connectedCallback () {
       if (this.isConnected) {
         this.#title = this.shadowRoot.querySelector('#title')
         this.addEventListener('mousedown', this.#onMouseDown)
       }
     }
 
-    setTitle(title) {
+    setTitle (title) {
       this.#title.innerHTML = title
     }
 
     getTitle = () => this.#title.innerHTML
 
-    disconnectedCallback() {
+    disconnectedCallback () {
       this.removeEventListener('mousedown', this.#onMouseDown)
     }
 

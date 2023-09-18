@@ -6,13 +6,13 @@ window.customElements.define('maximise-button',
       super()
     }
 
-    connectedCallback() {
+    connectedCallback () {
       if (this.isConnected) {
         this.addEventListener('click', this.#onClick)
       }
     }
 
-    disconnectedCallback() {
+    disconnectedCallback () {
       this.removeEventListener('click', this.#onClick)
     }
 

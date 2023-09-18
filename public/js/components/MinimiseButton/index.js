@@ -1,16 +1,16 @@
 window.customElements.define('minimise-button',
   class extends window.HTMLElement {
-    constructor() {
+    constructor () {
       super()
     }
 
-    connectedCallback() {
+    connectedCallback () {
       if (this.isConnected) {
         this.addEventListener('click', this.#onClick)
       }
     }
 
-    disconnectedCallback() {
+    disconnectedCallback () {
       this.removeEventListener('click', this.#onClick)
     }
 

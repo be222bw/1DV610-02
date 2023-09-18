@@ -8,13 +8,13 @@ window.customElements.define('border-element',
       this.innerHTML = borderTemplate
     }
 
-    connectedCallback() {
+    connectedCallback () {
       if (this.isConnected) {
         this.addEventListener('mousedown', this.#onMouseDown)
       }
     }
 
-    disconnectedCallback() {
+    disconnectedCallback () {
       this.removeEventListener('mousedown', this.#onMouseDown)
     }
     
@@ -47,7 +47,7 @@ window.customElements.define('border-element',
       this.dispatchEvent(resizeWindow)
     }
 
-    #onMouseLeave(e) {
+    #onMouseLeave (e) {
       this.removeEventListener('mousemove', this.#onMouseMove)
       this.removeEventListener('mouseleave', this.#onMouseLeave)
     }

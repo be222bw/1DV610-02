@@ -5,8 +5,6 @@ import '../MinimiseButton'
 import '../BorderElement'
 import '../TitleBar'
 
-'use strict'
-
 window.customElements.define('window-element',
 class extends window.HTMLElement {
   constructor () {
@@ -15,7 +13,7 @@ class extends window.HTMLElement {
       this.shadowRoot.innerHTML = windowTemplate
   }
 
-  attributeChangedCallback(name, oldValue, newValue) {
+  attributeChangedCallback (name, oldValue, newValue) {
     if (name === 'data-title') {
       this.setTitle(newValue)
     }
@@ -25,52 +23,33 @@ class extends window.HTMLElement {
     this.shadowRoot.querySelector('title-bar').setTitle(title)
   }
 
-  #getImportableString (elementName) {
-    let string = ''
-    for (let i = 0; i < elementName.length; i++) {
-      const currentCharacter = elementName.charAt(i)
-      if (i === 0) {
-        string += currentCharacter.toUpperCase()
-      } else if (currentCharacter === '-') {
-        const nextCharacter = elementName.charAt(++i).toUpperCase()
-        string += nextCharacter
-      } else {
-        string += currentCharacter
-      }
-    }
-    return string
-  }
-
-  connectedCallback() {
+  connectedCallback () {
     if (this.isConnected) {
       this.addEventListener('closeWindow', this.close)
       this.addEventListener('maximiseWindow', this.maximise)
       this.addEventListener('minimiseWindow', this.minimise)
-      document.addEventListener('mousedown', this.#activateOrDeactivateWindow)
+      document.addEventListener('mousedown', this.#activateOrDeactivate)
       this.addEventListener('resizeWindow', this.#resize)
-      this.addEventListener('moveWindow', this.#moveWindow)
+      this.addEventListener('moveWindow', this.#move)
     }
   }
   
-  disconnectedCallback() {
+  disconnectedCallback () {
     this.removeEventListener('closeWindow', this.close)
     this.removeEventListener('minimiseWindow', this.minimise)
     this.removeEventListener('maximiseWindow', this.maximise)
-    this.removeEventListener('mousedown', this.#activateOrDeactivateWindow)
+    this.removeEventListener('mousedown', this.#activateOrDeactivate)
     this.removeEventListener('resizeWindow', this.#resize)
-    this.removeEventListener('moveWindow', this.#moveWindow)
+    this.removeEventListener('moveWindow', this.#move)
   }
-  
-  setTitle = (title) =>
-    this.shadowRoot.querySelector('title-bar').setTitle(title)
 
-  close(e) {
+  close (e) {
     e.stopPropagation()
     this.#dispatchEvent('wasClosed')
     this.remove()
   }
 
-  #dispatchEvent(name, detail) {
+  #dispatchEvent (name, detail) {
     this.dispatchEvent(new CustomEvent(name,
       {bubbles: true, composed: true, detail}))
   }
@@ -90,7 +69,7 @@ class extends window.HTMLElement {
       this.hasAttribute('data-min') })
   }
 
-  #toggleResize() {
+  #toggleResize () {
     if (this.hasAttribute('data-max')) {
       this.removeEventListener('resizeWindow', this.#resize)
     } else {
@@ -98,28 +77,28 @@ class extends window.HTMLElement {
     }
   }
   
-  #activateOrDeactivateWindow = (e) => {
+  #activateOrDeactivate = (e) => {
     if (e.target === this) {
       if (!this.hasAttribute('data-active')) {
-        this.activateWindow()
+        this.activate()
       }
     } else {
-      this.deactivateWindow()
+      this.deactivate()
     }
   }
 
-  activateWindow() {
+  activate () {
     this.setAttribute('data-active', '')
     document.body.appendChild(this)
     this.#dispatchEvent('activateWindow')
   }
 
-  deactivateWindow() {
+  deactivate () {
     this.removeAttribute('data-active')
     this.#dispatchEvent('deactivateWindow')
   }
 
-  #resize(e) {
+  #resize (e) {
     e.stopPropagation()
     const sides = e.detail.sides
     const coordinates = e.detail.coordinates
@@ -135,7 +114,7 @@ class extends window.HTMLElement {
     this.#dispatchEvent('wasResized', {sides, coordinates})
   }
   
-  #moveWindow = (e) => {
+  #move = (e) => {
     e.stopPropagation()
     const movementX = e.detail.movementX
     const movementY = e.detail.movementY
@@ -146,8 +125,8 @@ class extends window.HTMLElement {
     this.#dispatchEvent('wasMoved', {movementX, movementY})
   }
 
-  #getOppositeSide(direction) {
-    switch (direction) {
+  #getOppositeSide (side) {
+    switch (side) {
       case 'left':
         return 'right'
       case 'right':
@@ -161,7 +140,7 @@ class extends window.HTMLElement {
     }
   }
   
-  #getDimensionBySide(side) {
+  #getDimensionBySide (side) {
     switch (side) {
       case 'left':
       case 'right':
@@ -174,19 +153,19 @@ class extends window.HTMLElement {
     }
   }
 
-  moveVertically(movement) {
+  moveVertically (movement) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-y', `${boundingClientRect.y + 
       movement}px`)
   }
   
-  moveHorizontally(movement) {
+  moveHorizontally (movement) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-x', `${boundingClientRect.x + 
       movement}px`)
   }
 
-  setSide(side, pixels) {
+  setSide (side, pixels) {
     switch (side) {
       case 'left':
         this.setLeft(pixels)
@@ -205,7 +184,7 @@ class extends window.HTMLElement {
     }
   }
   
-  setLeft(pixels) {
+  setLeft (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-x', `${pixels}px`)
     const oldWidth = boundingClientRect.width
@@ -213,7 +192,7 @@ class extends window.HTMLElement {
     this.style.width = (oldWidth - pixels + oldLeft) + 'px'
   }
 
-  setTop(pixels) {
+  setTop (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-y', `${pixels}px`)
     const oldHeight = boundingClientRect.height
@@ -221,21 +200,21 @@ class extends window.HTMLElement {
     this.style.height = (oldHeight - pixels + oldTop) + 'px'
   }
 
-  setRight(pixels) {
+  setRight (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     const oldRight = boundingClientRect.right
     const oldWidth = boundingClientRect.width
     this.style.width = (oldWidth + pixels - oldRight) + 'px'
   }
 
-  setBottom(pixels) {
+  setBottom (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     const oldBottom = boundingClientRect.bottom
     const oldHeight = boundingClientRect.height
     this.style.height = (oldHeight + pixels - oldBottom) + 'px'
   }
 
-  #wouldBeLessThanMinimum(side, newCoordinate) {
+  #wouldBeLessThanMinimum (side, newCoordinate) {
     const boundingClientRect = this.getBoundingClientRect()
     const oppositeSide = this.#getOppositeSide(side)
     const dimension = this.#getDimensionBySide(side)
@@ -245,13 +224,13 @@ class extends window.HTMLElement {
     return difference < minDimension
   }
 
-  #getMinDimension(dimension) {
+  #getMinDimension (dimension) {
     const computedDimension =
       window.getComputedStyle(this)[`min-${dimension}`]
     return parseInt(computedDimension, 10)
   }
 
-  static get observedAttributes() {
+  static get observedAttributes () {
     return ['data-min', 'data-max', 'data-active', 'data-title']
   }
 })
