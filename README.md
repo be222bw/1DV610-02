@@ -29,6 +29,8 @@ This module took a lot longer than intended to develop. Maybe drawing up a plan 
 
 Testing the module was done manually, without many exceptions or similar techniques. At least during development, some exceptions were thrown in switch statements, in case of invalid cases, but those would only occur if the user had changed the code willingly, so they did not really fill a need. The module, like any computer window, is mostly based on a graphical representation of applications, so manual testing was the most sensible option.
 
+Most of the methods were monads, even though many of the event handlers did not use the event objects, and could have been niladic. The *e* parameter was often just put in the argument list just in case. The main script file had a couple of dyads.
+
 The module made use of custom events to inform the parent window of events in the controls (such as buttons), but also so the user could react. When testing an application in the window (a window within a window, for lack of a better application), however, it was noticed that those events affected both the parent window and the child window, so it was decided to stop propagation from the child window, and instead passing **another** custom event, which would not affect the windows. Maybe this was a bad decision, because few users would put a window within a window. The point is, another application with which to test the window would be a good choice.
 
 The nomenclature of the variables and methods was fairly straight-forward, even though one particular type of variable name was hard to decide (should it be position or coordinate) and there was some mix-up during development of side and dimension, although are naturally different concepts.
