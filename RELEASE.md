@@ -37,7 +37,7 @@ A small number of exceptions was put in switch statements, in case the programme
 ### Testfall
 Lista de enskilda testfallen. **Fetmarkera** sådant som du själv fyllt i. En rad per testfall. Om ni använder vertyg för testning kan ni ha en bild här med testrapporten. Tänk på att kommunicera till mig. Vad fungerar?, vad fungerar inte? Hur är det testat? Vilka delar testas inte?
 
-Most of the methods, that the second-party programmer uses, don't have any meaningful output, except what is shown in the browser (size of window, etc.), so the the test cases listed are only of the GUI behaviour.
+Most of the methods, that the second-party programmer uses, do not have any meaningful output, except what is shown in the browser (size of window, etc.), so the the test cases listed are only of the GUI behaviour.
 
 | Vad testas   | input              | output | utfall PASS/FAIL           |
 | ------------ | ------------------ | ------ | -------------------------- |
@@ -55,17 +55,73 @@ Most of the methods, that the second-party programmer uses, don't have any meani
 
 ### Namngivning
 
+Since there are no real instance variables, this will list the attributes instead. To avoid **name collision**, all these attributes have been prepended with *data-*. Even though attribute collision is rarely a problem, some HTML attributes have predefined behaviour for all HTML elements. One example is *title*, whose default behaviour is to show a tool-tip on hover.
+
 | Namn och förklaring  | Reflektion                                   |
 | -------------------  | ---------------------------------------------|
+| data-title           | As stated, *title* has predefined behaviour, |
+|                      | so *data-* was prepended. This was done with |
+|                      | all other attributes as well, in case of fut-|
+|                      | changes to the HTML standard.                |
 |                      |                                              |
+| data-max             | Whether the window is maximised. The corres- |
+|                      | ponding CSS rules are marked as *!important*,|
+|                      | so that the coordinates can be saved as att- |
+|                      | ributes without conflicting with this attri- |
+|                      | bute.                                        |
+|                      |                                              |
+| data-min             | Whether the window is minimised. No need for |
+|                      | *!important* here.                           |
+|                      |                                              |
+| data-active          | Whether the window is active. **Explicit**   |
+|                      | enough.                                      |
+|                      |                                              |
+| [Some CSS rules are  |                                              |
+| included as attri-   |                                              |
+| butes, but these are |                                              |
+| not listed.]         |                                              |
 
 ### Funktioner
 
-| Metodnamn och förklaring  | Reflektion                                   |
-| -------------------  | ---------------------------------------------|
-|                      |                                              |
+| Metodnamn och förklaring | Reflektion                                   |
+| ------------------------ | ---------------------------------------------|
+| setTitle is **explicit.**| **Monadic**. It has a duplicate in the       |
+|                          | *title-bar* as well, which might be a viola- |
+|                          | -tion of **DRY**, but it is in another class.|
+|                          |                                              |
+| close, minimise and maxi-| Simple to understand in a computer context.  |
+| mise close, minimise,    | **Niladic**.                                 |
+| and maximise the window  |                                              |
+| respectively.            |                                              |
+|                          |                                              |
+| activate and deactivate  | Should be clear. An active window is on top. |
+| activates and deactiv-   |                                              |
+| ates the window, respect-|                                              |
+| ively.                   |                                              |
+|                          |                                              |
+| moveVertically and       | Since the the window is the caller, no noun  |
+| moveHorizontally move    | is included in the method name, but instead  |
+| the window vertically and| an adverb. The adverb denotes the dimension  |
+| horizontally, respecti-  | in which to move the window.                 |
+| vely. **Monadic** method |                                              |
+| that take the number of  |                                              |
+| pixels as an argument.   |                                              |
+|                          |                                              |
+| setSide sets the top,    | setSide is **dyadic**, while the lower-level | 
+| bottom, left or right of | methods are **monadic**.                     |
+| the window. There are    |                                              |
+| methods, for each side,  |                                              |
+| which handle the logic   |                                              |
+| for each side on a low-  |                                              |
+| er level.                |                                              |
+|                          |                                              |
+| [Private methods not lis-|
+| ted.]
+
 
 ## Laborationsreflektion
 Most methods are monadic, although some of the event handlers could have been niladic; the event object *e* was put in those argument lists for clarity and just in case future iterations needed it. A couple of methods in the main script (for the window-element) were dyadic, and the attributeChangedCallback was triadic, according to its signature.
 
-There are no double dependencies in the code, so the window-element uses the "sub-elements," which are completely independent, although useless on their own. There is some repetition in the code, as the three buttons for closing, maximising (and restoring) and minimising are not of the same type; they could each theoretically have used the custom event name as an attribute, and let the window object handle the corresponding behaviour.
+There are no double dependencies in the code, so the window-element uses the "sub-elements," which are completely independent, although useless on their own. There is some repetition (in violation of **DRY**) in the code, as the three buttons for closing, maximising (and restoring) and minimising are not of the same type; they could each theoretically have used the custom event name as an attribute, and let the window object handle the corresponding behaviour.
+
+The classes do not have any instance variables, except for the *shadowRoot* and *innerHTML*, but they instead store important data as attributes. A positive consequence of this, is that they are selectable from CSS.
