@@ -21,8 +21,6 @@ window.customElements.define('title-bar',
       this.#title.innerHTML = title
     }
 
-    getTitle = () => this.#title.innerHTML
-
     disconnectedCallback () {
       this.removeEventListener('mousedown', this.#onMouseDown)
     }
