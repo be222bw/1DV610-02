@@ -85,38 +85,42 @@ Since there are no real instance variables, this will list the attributes instea
 
 | Metodnamn och förklaring | Reflektion                                   |
 | ------------------------ | ---------------------------------------------|
-| setTitle is **explicit.**| **Monadic**. It has a duplicate in the       |
+| setTitle is **explicit**.| **Monadic**. It has a duplicate in the       |
 |                          | *title-bar* as well, which might be a viola- |
 |                          | -tion of **DRY**, but it is in another class.|
+|                          | The verb *set* in the method name clearly    |
+|                          | modifies a variable (the title, which is a   |
+|                          | common term in the **problem domain**),a     |
+|                          | domain known by developers.                  |
 |                          |                                              |
-| close, minimise and maxi-| Simple to understand in a computer context.  |
-| mise close, minimise,    | **Niladic**.                                 |
-| and maximise the window  |                                              |
+| close, minimise and maxi-| The terms are familiar to someone used to the|
+| mise close, minimise,    | **problem domain**, whose userbase includes  |
+| and maximise the window  | developers. The methods are **niladic**.     |
 | respectively.            |                                              |
 |                          |                                              |
-| activate and deactivate  | Should be clear. An active window is on top. |
-| activates and deactiv-   |                                              |
-| ates the window, respect-|                                              |
+| activate and deactivate  | Should be clear, although the terms are not  |
+| activates and deactiv-   | necessarily used in the **problem domain**.  |
+| ates the window, respect-| The methods are **niladic**.                 |
 | ively.                   |                                              |
 |                          |                                              |
 | moveVertically and       | Since the the window is the caller, no noun  |
 | moveHorizontally move    | is included in the method name, but instead  |
 | the window vertically and| an adverb. The adverb denotes the dimension  |
-| horizontally, respecti-  | in which to move the window.                 |
-| vely. **Monadic** method |                                              |
-| that take the number of  |                                              |
-| pixels as an argument.   |                                              |
+| horizontally, respecti-  | in which to move the window. The name for the|
+| vely. **Monadic** method | only argument is *movement*, which is pretty |
+| that take the number of  | vague. A better name would be                |
+| pixels as an argument.   | *movementInPixels*.                          |
 |                          |                                              |
-| setSide sets the top,    | setSide is **dyadic**, while the lower-level | 
-| bottom, left or right of | methods are **monadic**.                     |
-| the window. There are    |                                              |
-| methods, for each side,  |                                              |
-| which handle the logic   |                                              |
-| for each side on a low-  |                                              |
-| er level.                |                                              |
-|                          |                                              |
-| [Private methods not lis-|
-| ted.]
+| setSide sets the top,    | setSide is **dyadic**, while the lower-level |
+| bottom, left or right of | methods are **monadic**. Side is a term used |
+| the window. There are    | in the **problem domain**, while in the      |
+| methods, for each side,  | **solution domain** (i.e HTML and CSS), the  |
+| which handle the logic   | term *position* could have been used.        |
+| for each side on a low-  | The method set the sides in pixels, so a     |
+| er level.                | better name could have been                  |
+|                          | *setSideInPixels*.                           |
+| [Private methods not lis-|                                              |
+| ted.]                    |                                              |
 
 
 ## Laborationsreflektion
