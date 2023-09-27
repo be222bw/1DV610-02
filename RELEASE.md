@@ -87,11 +87,12 @@ Since there are no real instance variables, this will list the attributes instea
 | ------------------------ | ---------------------------------------------|
 | setTitle is **explicit**.| **Monadic**. It has a duplicate in the       |
 |                          | *title-bar* as well, which might be a viola- |
-|                          | -tion of **DRY**, but it is in another class.|
+|                          | tion of **DRY**, but it is in another class.|
 |                          | The verb *set* in the method name clearly    |
-|                          | modifies a variable (the title, which is a   |
-|                          | common term in the **problem domain**),a     |
-|                          | domain known by developers.                  |
+|                          | indicates that the method modifies a vari-   |
+|                          | able (the title, which is a common term in   |
+|                          | the **problem domain**), a domain known by   |
+|                          |  developers.                                 |
 |                          |                                              |
 | close, minimise and maxi-| The terms are familiar to someone used to the|
 | mise close, minimise,    | **problem domain**, whose userbase includes  |
@@ -99,17 +100,19 @@ Since there are no real instance variables, this will list the attributes instea
 | respectively.            |                                              |
 |                          |                                              |
 | activate and deactivate  | Should be clear, although the terms are not  |
-| activates and deactiv-   | necessarily used in the **problem domain**.  |
-| ates the window, respect-| The methods are **niladic**.                 |
-| ively.                   |                                              |
+| activates and deactiv-   | necessarily used in the **problem domain** or|
+| ates the window, respect-| the **solution domain**. The methods are     |
+| ively.                   | **niladic**.                                 |
 |                          |                                              |
 | moveVertically and       | Since the the window is the caller, no noun  |
 | moveHorizontally move    | is included in the method name, but instead  |
 | the window vertically and| an adverb. The adverb denotes the dimension  |
 | horizontally, respecti-  | in which to move the window. The name for the|
-| vely. **Monadic** method | only argument is *movement*, which is pretty |
-| that take the number of  | vague. A better name would be                |
-| pixels as an argument.   | *movementInPixels*.                          |
+| vely.                    | only argument is *movement*, which is pretty |
+|                          | vague. A better name would be                |
+|                          | *movementInPixels*, which hints about the    |
+|                          | **solution domain** and **problem domain**.  |
+|                          | The methods are **monadic**.                 |
 |                          |                                              |
 | setSide sets the top,    | setSide is **dyadic**, while the lower-level |
 | bottom, left or right of | methods are **monadic**. Side is a term used |
@@ -119,6 +122,13 @@ Since there are no real instance variables, this will list the attributes instea
 | for each side on a low-  | The method set the sides in pixels, so a     |
 | er level.                | better name could have been                  |
 |                          | *setSideInPixels*.                           |
+|                          |                                              |
+| getBoundingClientRect is | Built-in method. It is a **niladic** method  |
+| a useful method if       | that returns an object of the inconsistently |
+| the developer wants the  | named class *DOMRect*.                       |
+| position and size of the |                                              |
+| window.                  |                                              |
+|                          |                                              |
 | [Private methods not lis-|                                              |
 | ted.]                    |                                              |
 
