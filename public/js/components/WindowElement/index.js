@@ -28,7 +28,7 @@ class extends window.HTMLElement {
       this.addEventListener('closeWindow', this.close)
       this.addEventListener('maximiseWindow', this.maximise)
       this.addEventListener('minimiseWindow', this.minimise)
-      document.addEventListener('mousedown', this.#activateOrDeactivate)
+      this.addEventListener('mousedown', this.#activateOrDeactivate)
       this.addEventListener('resizeWindow', this.#resize)
       this.addEventListener('moveWindow', this.#move)
     }
