@@ -89,7 +89,7 @@ class extends window.HTMLElement {
 
   activate () {
     this.setAttribute('data-active', '')
-    document.body.appendChild(this)
+    this.parentNode.appendChild(this)
     this.#dispatchEvent('activateWindow')
   }
 
