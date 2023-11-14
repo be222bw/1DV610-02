@@ -166,25 +166,27 @@ class extends window.HTMLElement {
   }
 
   setSide (side, pixels) {
+    if (this.#wouldBeLessThanMinimum(side, pixels))
+      return
     switch (side) {
       case 'left':
-        this.setLeft(pixels)
+        this.#setLeft(pixels)
         break
       case 'top':
-        this.setTop(pixels)
+        this.#setTop(pixels)
         break
       case 'right':
-        this.setRight(pixels)
+        this.#setRight(pixels)
         break
       case 'bottom':
-        this.setBottom(pixels)
+        this.#setBottom(pixels)
         break
       default:
         throw new Error('IllegalArgumentException')
     }
   }
   
-  setLeft (pixels) {
+  #setLeft (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-x', `${pixels}px`)
     const oldWidth = boundingClientRect.width
@@ -192,7 +194,7 @@ class extends window.HTMLElement {
     this.style.width = (oldWidth - pixels + oldLeft) + 'px'
   }
 
-  setTop (pixels) {
+  #setTop (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     this.style.setProperty('--translate-y', `${pixels}px`)
     const oldHeight = boundingClientRect.height
@@ -200,14 +202,14 @@ class extends window.HTMLElement {
     this.style.height = (oldHeight - pixels + oldTop) + 'px'
   }
 
-  setRight (pixels) {
+  #setRight (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     const oldRight = boundingClientRect.right
     const oldWidth = boundingClientRect.width
     this.style.width = (oldWidth + pixels - oldRight) + 'px'
   }
 
-  setBottom (pixels) {
+  #setBottom (pixels) {
     const boundingClientRect = this.getBoundingClientRect()
     const oldBottom = boundingClientRect.bottom
     const oldHeight = boundingClientRect.height
